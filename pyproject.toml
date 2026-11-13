@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vortex-telegram-bot"
+version = "0.1.0"
+description = "Vortex — a Persian-friendly Telegram group-assistant bot with an OpenAI-compatible LLM token pool, image generation, live prices and extras."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "VortexLabsHQ" }]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "B",   # flake8-bugbear
+  "UP",  # pyupgrade
+]
+ignore = [
+  "E501",  # line too long (long Persian strings / URLs); ruff format handles layout
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["E402"]  # tests set env vars before importing bot modules

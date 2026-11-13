@@ -1,0 +1,25 @@
+# SearXNG settings for the bundled search instance.
+# Minimal config: the search limiter is OFF (the bot is the only client)
+# and JSON output is enabled, which is the format the bot requests
+# (GET /search?q=...&format=json).
+use_default_settings: true
+
+general:
+  instance_name: "Vortex SearXNG"
+  debug: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "auto"
+  # JSON format must be enabled for the bot's /search?format=json calls.
+  formats:
+    - html
+    - json
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret: "change-me-to-a-random-secret"
+  limiter: false
+  image_proxy: true

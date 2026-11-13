@@ -1,0 +1,39 @@
+# Vortex Telegram Bot — local stack: the bot + a self-hosted SearXNG
+# search engine (the bot's default SEARCH_PROVIDER=searxng).
+#
+#   cp .env.example .env   # fill in BOT_TOKEN, BOSS_ID, LLM key(s)
+#   docker compose up -d --build
+#
+# NOTE on SearXNG networking: the bot code currently calls SearXNG at the
+# HARDCODED address http://127.0.0.1:8080/search (bot/web_tools.py) — there
+# is no SEARXNG_URL env var yet. Inside a container, 127.0.0.1 is the bot
+# container itself, so the bot service below shares the SearXNG service's
+# network namespace (network_mode: service:searxng) to make that address
+# resolve. The proper fix is a SEARXNG_URL setting in bot code; until then
+# do not remove the network_mode line or web search will silently fail
+# (the bot falls back to Wikipedia).
+
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: vortex-searxng
+    environment:
+      - SEARXNG_BASE_URL=http://127.0.0.1:8080/
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    # No published port: the bot reaches it on localhost via the shared
+    # network namespace. Publish "8080:8080" here only if you want to
+    # browse SearXNG yourself.
+    restart: unless-stopped
+
+  bot:
+    build: .
+    container_name: vortex-bot
+    network_mode: service:searxng
+    depends_on:
+      - searxng
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

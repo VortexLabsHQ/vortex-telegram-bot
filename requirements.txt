@@ -1,0 +1,41 @@
+# Vortex Telegram Bot — runtime dependencies.
+# Derived from the production pip freeze and verified against the actual
+# imports in bot/*.py (see the import -> package mapping in the repo docs).
+# Version ranges are used instead of exact pins so installs stay fresh;
+# the ranges are chosen to match what the code actually needs.
+
+# Telegram Bot API (async). v22.x is required; v23 changes the API.
+python-telegram-bot[job-queue]>=22.0,<23.0
+# python-telegram-bot's job queue runs on APScheduler (pulled in by the
+# [job-queue] extra above); listed explicitly so the scheduler is never
+# silently missing.
+APScheduler>=3.11,<4.0
+
+# OpenAI-compatible LLM client (chat, vision, token pool).
+openai>=3.0,<4.0
+# Async HTTP client used by the LLM client, search, downloads and fetch.
+httpx>=0.28,<1.0
+
+# .env file loading (bot/config.py).
+python-dotenv>=1.0,<2.0
+
+# HTML parsing (web fetch, dollar-rate scraping) + the explicit lxml parser.
+beautifulsoup4>=4.12,<5.0
+lxml>=5.0,<7.0
+
+# Image handling (photo editing, thumbnails).
+Pillow>=10.0,<14.0
+
+# File analysis: PDF text, spreadsheets, Word documents.
+pypdf>=5.0,<7.0
+openpyxl>=3.1,<4.0
+python-docx>=1.0,<2.0
+
+# PDF creation (file-creation feature).
+reportlab>=4.0,<6.0
+
+# Persian/Arabic-script shaping for PDF output (lazy import in
+# bot/file_handler.py; falls back gracefully if missing, but install it
+# for correct RTL text in generated PDFs).
+arabic-reshaper>=3.0,<4.0
+python-bidi>=0.6,<1.0
