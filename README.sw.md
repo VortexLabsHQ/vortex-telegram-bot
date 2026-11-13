@@ -38,7 +38,21 @@ Unahitaji seva (au kompyuta inayobaki wazi) inayotekelea **Linux** na hizi zipak
 | **systemd** | `systemctl --version` | `systemd 24x` au sawa |
 | **Docker** *(chaguo)* | `docker --version` | `Docker version 2x.x.x` — inahitajika tu ikiwa unataka utafutaji mtandaoni wa chaguo la SearXNG |
 
-Ikiwa kitu kingine hakipo, mpakizi atakupa majaribio ya kupakiza kwa ajili yako kwa `apt` (kwenye Debian/Ubuntu). Kwenye mifumo mingine, pakiza kwanza kwa meneja wako wa paketi.
+Ikiwa kuna kitu kikosekacho, sasisha yote kwa amri moja (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Kwa `docker` ya chaguo-msingi (inahitajika tu ikiwa unataka utafutaji wa mtandao wa `SearXNG`):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Baada ya mstari wa mwisho, ondoa na ingia tena (au tekeleza amri za `docker` kwa `sudo`). Mwanzilishi pia huhakikishia kusasisha zana zilizokosekana kwa ajili yako kwa `apt` kwenye `Debian/Ubuntu`. Kwa mifumo mingine, sasisha zana hizi kwa meneja wako wa paketi kwanza. `systemd` inakuja na mfumo — hawezi kusasishwa pekee.
 
 Pia unahitaji vitu viwili kutoka Telegram (vyote ni bure):
 
@@ -84,7 +98,7 @@ Sasa fungua Telegram na ongea na bot yako:
 
 - Tuma `/start` — bot inasalamu.
 - Kwenye **mazungumzo ya binafsi**, andika kwake tu — hakuna hitaji ya neno la kuamsha.
-- Kwenye **kikundi**, ongeza bot kwenye kikundi, kisha sema jina lake, k.m.: `Vortex saa ngapi?`
+- Kwenye **kikundi**, ongeza bot kwenye kikundi, kisha futa Faragha ya Kikundi: kwenye [@BotFather](https://t.me/BotFather) tuma `/setprivacy`, chagua bot yako, na chagua **Disable** — vinginevyo bot hawezi kuona ujumbe wa kikundi na haitaweza kusikia neno lake la kuamka. Kisha sema jina lake, kwa mfano: `Vortex saa ngapi?`
 - Kama boss, tuma `/admin` kwenye mazungumzo ya binafsi kufungua paneli ya msimamizi iliyofichwa.
 
 **Masasisho ni ya kiotomatiki.** Mara moja kwa siku bot inaatilia GitHub kwa toleo jipya. Ikipo, inakutumia ujumbe binafsi na viungo vya ✅ / ❌. Bonyeza ✅ na itasasisha na kuanzisha upya — hutahitaji kugusa seva.
@@ -158,7 +172,7 @@ Bot huhakikisha matoleo ya GitHub ya `VortexLabsHQ/vortex-telegram-bot` mara moj
 Token inatoka kwa [@BotFather](https://t.me/BotFather). Hakikisha umekopi token nzima (tarakimu, nukta, kisha herufi 35+), bila nafasi zilizozidi. Ukiufuta bot au ukiunda token mpya, ya jadi haifanyi kazi tena — weka mpya.
 
 **Bot haijibu kwenye kundi langu.**
-Vitu tatu vinavyohitajika kuangalia: (1) bot lazima ongezwe kwenye kundi, (2) lazima useme neno lake la kuamka — jina lake, kwa mfano `Vortex saa ngapi?` — bot inaskia tu wakati jina lake linasemiwa kwenye vikundi, (3) kwenye mazungumzo binafsi hakuna neno la kuamka linachohitajika kabisa.
+Vitu nne vinavyohitajika kuangaliwa: (1) Faragha ya Kikundi lazima ifutwe — kwenye [@BotFather](https://t.me/BotFather) tuma `/setprivacy`, chagua bot yako, na chagua **Disable**; ikiwa faragha ipo on, bot hawezi kuona ujumbe wowote wa kikundi, (2) bot lazima ongezwe kwenye kikundi, (3) unapaswa kusema neno lake la kuamka — jina lake, kwa mfano `Vortex saa ngapi?` — bot hu sikiliza tu wakati jina lake linasemwa kwenye vikundi, (4) kwenye mazungumzo ya binafsi hakuna neno la kuamka linachohitajika kabisa.
 
 **Bot inajibu kwa Kiingereza, si lugha yangu.**
 Tuma `/admin` (mkuu tu) → Lugha & Nchi, na chagua lugha yako. Mwanzilishi pia huliza lugha — bofya Enter hapo kukubali chaguo-msingi cha nchi yako.

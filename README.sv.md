@@ -38,7 +38,21 @@ Du behöver en server (eller en dator som ständigt är på) som kör **Linux** 
 | **systemd** | `systemctl --version` | `systemd 24x` eller liknande |
 | **Docker** *(valfritt)* | `docker --version` | `Docker version 2x.x.x` — behövs bara om du vill ha den valfria SearXNG-webbsökningen |
 
-Om något saknas erbjuder installationsprogrammet att installera det åt dig med `apt` (på Debian/Ubuntu). På andra system installerar du det med din pakethanterare först.
+Om något saknas, installera allt med ett kommando (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+För den valfria `Docker` (behövs bara om du vill ha `SearXNG` webbsökning):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Efter den sista raden, logga ut och in igen (eller kör `docker`-kommandon med `sudo`). Installationsprogrammet erbjuder också att installera saknade verktyg åt dig med `apt` på `Debian/Ubuntu`. På andra system, installera dem med din pakethanterare först. `systemd` ingår i systemet — det kan inte installeras separat.
 
 Du behöver också två saker från Telegram (båda är gratis):
 
@@ -84,7 +98,7 @@ journalctl -u vortex-bot -f
 
 - Skicka `/start` — boten säger hej.
 - I en **privat chatt**, skriv bara till den — inget aktiveringsord behövs.
-- I en **grupp**, lägg till boten i gruppen, säg sedan dess namn, till exempel: `Vortex what's the time?`
+- I en **grupp**, lägg till boten i gruppen, stäng sedan av gruppintegritet: i [@BotFather](https://t.me/BotFather) skicka `/setprivacy`, välj din bot och välj **Disable** — annars kan boten inte se gruppmeddelanden och hör inte sitt vakningsord. Säg sedan dess namn, till exempel: `Vortex what's the time?`
 - Som chef, skicka `/admin` i en privat chatt för att öppna den dolda adminpanelen.
 
 **Uppdateringar sker automatiskt.** En gång per dag kontrollerar boten GitHub efter en ny version. Om en finns tillgänglig skickar den ett privat meddelande med ✅ / ❌-knappar. Tryck på ✅ så uppdaterar den sig själv och startar om — du behöver aldrig röra servern.
@@ -158,7 +172,7 @@ Botten kollar GitHub-releases för `VortexLabsHQ/vortex-telegram-bot` en gång p
 Tokenen kommer från [@BotFather](https://t.me/BotFather). Se till att du kopierade hela tokenen (siffror, ett kolon, sedan 35+ tecken), utan extra mellanslag. Om du raderade boten eller skapade en ny token slutar den gamla att fungera — klistra in den nya.
 
 **Boten svarar inte i min grupp.**
-Tre saker att kolla: (1) boten måste vara tillagd i gruppen, (2) du måste säga dess vakningsord — dess namn, till exempel `Vortex what's the time?` — boten lyssnar bara när dess namn sägs i grupper, (3) i en privat chatt behövs inget vakningsord alls.
+Fyra saker att kontrollera: (1) Gruppintegritet måste vara avstängd — i [@BotFather](https://t.me/BotFather) skicka `/setprivacy`, välj din bot och välj **Disable**; med integritet på kan boten inte se gruppmeddelanden alls, (2) boten måste läggas till i gruppen, (3) du måste säga dess vakningsord — dess namn, till exempel `Vortex what's the time?` — boten lyssnar bara när dess namn sags i grupper, (4) i en privat chatt behövs inget vakningsord alls.
 
 **Boten svarar på engelska, inte på mitt språk.**
 Skicka `/admin` (endast chef) → Språk & Land, och välj ditt språk. Installationsprogrammet frågar också efter språket — tryck Enter där för att acceptera ditt lands standard.

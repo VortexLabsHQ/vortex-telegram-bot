@@ -38,7 +38,21 @@ Kendi sunucunuzda, kendi ülkenizde ve dilinizde çalışır. Siz patronusunuz: 
 | **systemd** | `systemctl --version` | `systemd 24x` veya benzeri |
 | **Docker** *(isteğe bağlı)* | `docker --version` | `Docker version 2x.x.x` — sadece isteğe bağlı SearXNG web araması için gerekli |
 
-Eksik bir şey varsa, kurulum programı `apt` ile (Debian/Ubuntu'da) sizin için kurmayı teklif eder. Diğer sistemlerde, önce paket yöneticinizle kurun.
+Eğer bir şey eksikse, hepsini tek bir komutla kurun (Debian/Ubuntu):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+İsteğe bağlı Docker için (yalnızca SearXNG web araması isterseniz gerekli):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Son satırdan sonra çıkış yapıp tekrar girin (veya `docker` komutlarını `sudo` ile çalıştırın). Kurucu, eksik araçları `apt` ile Debian/Ubuntu'da sizin için kurmayı da teklif eder. Diğer sistemlerde, önce paket yöneticinizle kurun. `systemd` sistemle gelir — ayrı olarak kurulamaz.
 
 Telegram'dan ücretsiz olarak almanız gereken iki şey daha var:
 
@@ -84,7 +98,7 @@ journalctl -u vortex-bot -f
 
 - `/start` gönderin — bot selamlar.
 - **Özel sohbetlerde**, sadece yazın — uyanma kelimesi gerekmez.
-- **Gruplarda**, botu gruba ekleyin, sonra adını söyleyin, örneğin: `Vortex saat kaç?`
+- **Gruplarda** bir gruba botu ekleyin, ardından Grup Gizliliğini kapatın: [@BotFather](https://t.me/BotFather) adresine `/setprivacy` gönderin, botunuzu seçin ve **Disable**'ı seçin — aksi takdirde bot grup mesajlarını göremez ve uyanma kelimesini duymaz. Ardından botun adını söyleyin, örneğin: `Vortex saat kaç?`
 - Patron olarak, özel sohbette `/admin` gönderin gizli admin panelini açmak için.
 
 **Güncellemeler otomatik.** Günde bir bot GitHub'da yeni sürüm kontrol eder. Varsa, size özel mesajla ✅ / ❌ butonlarıyla haber verir. ✅'e basarsanız kendini günceller ve yeniden başlatır — sunucuya tekrar dokunmanıza gerek kalmaz.
@@ -158,7 +172,7 @@ Bot `VortexLabsHQ/vortex-telegram-bot` deposunun GitHub sürümlerini günde bir
 Token [@BotFather](https://t.me/BotFather)'dan gelir. Tüm token'ı kopyaladığınızdan emin olun (rakamlar, iki nokta üst üste, sonra 35+ karakter), fazladan boşluk olmadan. Botu sildiniz veya yeni token aldıysanız eski çalışmaz — yenisini yapıştırın.
 
 **Bot grubumda cevap vermiyor.**
-Üç şeyi kontrol edin: (1) bot gruba eklenmiş olmalı, (2) uyanma kelimesini — yani adını — söylemeli, örneğin `Vortex saat kaç?` — bot gruplarda sadece adı söylendiğinde dinler, (3) özel sohbetlerde hiç uyanma kelimesi gerekmez.
+Dört şeyi kontrol edin: (1) Grup Gizliliği kapalı olmalı — [@BotFather](https://t.me/BotFather) adresine `/setprivacy` gönderin, botunuzu seçin ve **Disable**'ı seçin; gizlilik açıkken bot grup mesajlarını hiç göremez, (2) bot gruba eklenmiş olmalı, (3) botun uyanma kelimesini (ismi) söylemelisiniz — örneğin `Vortex saat kaç?` — bot gruplarda sadece ismi söylendiğinde dinler, (4) özel sohbetlerde uyanma kelimesine gerek yoktur.
 
 **Bot benim dilimde değil, İngilizce cevap veriyor.**
 `/admin` gönderin (sadece patron) → Dil ve Ülke, dilinizi seçin. Kurulum programı da dil sorar — orada Enter'a basarak ülkenizin varsayılanını kabul edebilirsiniz.

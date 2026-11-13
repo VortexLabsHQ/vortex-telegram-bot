@@ -38,7 +38,21 @@ Potřebujete server (nebo počítač, který zůstaně zapnutý) s běžícím *
 | **systemd** | `systemctl --version` | `systemd 24x` nebo podobné |
 | **Docker** *(volitelné)* | `docker --version` | `Docker version 2x.x.x` — potřebné jen pokud chcete volitelné vyhledávání SearXNG |
 
-Pokud něco chybí, instalátor se nabídne to nainstalovat za vás pomocí `apt` (na Debian/Ubuntu). Na jiných systémech to nainstalujte svým správcem balíčků dřív.
+Pokud něco chybí, nainstalujte to vše jedním příkazem (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Pro volitelný `Docker` (potřebný pouze pokud chcete vyhledávání na webu `SearXNG`):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Po posledním řádku se odhlaste a přihlaste se znovu (nebo spouštějte příkazy `docker` s `sudo`). Instalátor také nabídne nainstalovat chybějící nástroje za vás pomocí `apt` na `Debian/Ubuntu`. Na jiných systémech je nainstalujte nejprve pomocí svého správce balíčků. `systemd` je součástí systému — nelze ho nainstalovat samostatně.
 
 Také potřebujete dvě věci od Telegramu (obě jsou zdarma):
 
@@ -84,7 +98,7 @@ Teď otevřete Telegram a povídejte si s botem:
 
 - Pošlete `/start` — bot vás pozdraví.
 - V **privátním chatu** jen pište — probudí slovo není potřeba.
-- Ve **skupině** přidejte bota do skupiny, pak řekněte jeho jméno, např.: `Vortex what's the time?`
+- Ve **skupině** přidejte bota do skupiny, pak vypněte Skupinovou soukromí: v [@BotFather](https://t.me/BotFather) pošlete `/setprivacy`, vyberte svého bota a zvolte **Disable** — jinak bot neuvidí skupinové zprávy a neslyší své probuzovací slovo. Pak řekněte jeho jméno, například: `Vortex what's the time?`
 - Jako šéf pošlete `/admin` v privátním chatu pro otevření skrytého admin panelu.
 
 **Aktualizace jsou automatické.** Jednou denně bot zkontroluje GitHub na novou verzi. Pokud je k dispozici, pošle vám privátní zprávu s tlačítky ✅ / ❌. Stiskněte ✅ a bot se sám aktualizuje a restartuje — nikdy nemusíte sahat na server.
@@ -158,7 +172,7 @@ Bot každý den zkontroluje GitHub releases repozitáře `VortexLabsHQ/vortex-te
 Token získáte od [@BotFather](https://t.me/BotFather). Ujistěte se, že jste zkopírovali celý token (číslice, dvojtečka, pak 35+ znaků), bez nadbytečných mezer. Pokud jste bota smazali nebo vytvořili nový token, starý přestane fungovat — vložte ten nový.
 
 **Bot neodpovídá ve skupině.**
-Tři věci k zkontrolovat: (1) bot musí být přidaný do skupiny, (2) musíte říct jeho probuzovací slovo — jeho jméno, například `Vortex kolik je hodin?` — bot poslouchá jen když se ve skupině řekne jeho jméno, (3) v privátním chatu není probuzovací slovo potřeba vůbec.
+Čtyři věci, které zkontrolovat: (1) Skupinová soukromí musí být vypnuté — v [@BotFather](https://t.me/BotFather) pošlete `/setprivacy`, vyberte svého bota a zvolte **Disable**; se zapnutou soukromím bot neuvidí žádné skupinové zprávy, (2) bot musí být přidán do skupiny, (3) musíte říct jeho probuzovací slovo — jeho jméno, například `Vortex what's the time?` — bot naslouchá pouze když je jeho jméno zmíněno ve skupinách, (4) v soukromém chatu není probuzovací slovo vůbec potřeba.
 
 **Bot odpovídá v angličtině, ne v mém jazyce.**
 Pošlete `/admin` (jen šéf) → Jazyk & Země, a vyberte svůj jazyk. Instalátor se také ptá na jazyk — tam stiskněte Enter pro přijetí výchozího nastavení vaší země.

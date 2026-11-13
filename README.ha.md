@@ -38,7 +38,21 @@ Kuna buƙatar server (ko kuma kwantaspia tana wulakanta) tana aiki da **Linux** 
 | **systemd** | `systemctl --version` | `systemd 24x` ko matsala |
 | **Docker** *(zaɓi)* | `docker --version` | `Docker version 2x.x.x` — ba a buƙatar ba sai idan ka so SearXNG na binciken wab na zaɓi |
 
-Idan wani abu ke kacewa, shigarwa zai ba da damar shigarwa maka da `apt` (a Debian/Ubuntu). A sistemoni da suka wuce, shigar da shi da maidabar paketin ku na farko.
+Idan akwai abu da ke kacewa, shigar da duk da daya da amsa daya (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Don wannan `Docker` na zaɓi (sai an bukatar idan kuna so binciken `SearXNG`):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Bayan hanyar ƙarshe, fita da sake shiga (ko yi `docker` awannan da `sudo`). Na gina ya kuma nuna shigar da kayan aiki da suka kacewa a cikin `apt` a `Debian/Ubuntu`. A sistemawa masu sauri, shigar da su da ma'amalan paketi na farko. `systemd` tana da cikin hanya — ba za a iya shigar da ita da kowa ba.
 
 Kuna buƙatar abu biyu daga Telegram (duk biyu kyauta):
 
@@ -84,7 +98,7 @@ Yanzu buɗe Telegram kuma magana da bot ɗinka:
 
 - Ayo `/start` — bot zai sallama.
 - A **magana a cikin zuciya**, kawai rubuta masa — ba a buƙatar kalmar fita ba.
-- A **ƙungiya**, kara bot a ƙungiya, sai ka ce sunansa, misali: `Vortex yaushe lokaci?`
+- A **ƙungiya**, kara bot zuwa group, sai rage Group Privacy: a [@BotFather](https://t.me/BotFather) aika `/setprivacy`, zaɓi bot ɗinka, kuma zaɓi **Disable** — in ba haka, bot ba za i ganuwa waɗannan? ba za i ji kalmar haske ba. Sai ka ce sunansa, misali: `Vortex yaushe lokaci?`
 - Kamar boss, ayo `/admin` a magana a cikin zuciya don buɗe filin admin na hanyar hana.
 
 **Sabuwawa ke aiki a hanyar mai kyau.** Kowane rana bot yana duba GitHub don sabuwar gudanarwa. Idan akwai, zai ayo wa ka sanarwa a cikin zuciya da kwanakin ✅ / ❌. Danna ✅ kuma zai sabunta shi da kai tsaye kuma ya fara sabuwa — ba ka bukatar hana hannu a server ba.
@@ -158,7 +172,7 @@ Bot din yana duba sabuntawar GitHub na `VortexLabsHQ/vortex-telegram-bot` kowane
 Token din zo daga [@BotFather](https://t.me/BotFather). Tabbatar da cewa ka rubuta dukan token din (lambobi, colon, sai 35+ alamar), ba tare da raguwa ba. Idan ka share bot din ko ka samu token sabuwa, wannan tsohuwa tana kare aiki — rubuta wannan sabuwa.
 
 **Ba bot ba ya amsa a kungiyar na.**
-Abubuwa uku da ake buƙatar duba: (1) a buƙata zama bot a cikin kungiya, (2) ka buƙata magana da kalmar shi don ya fara — sunshe, misali `Vortex yaushe lokaci?` — bot kawai yana sauraron idan an ce sunshe a cikin kungiyoyi, (3) a cikin tattaunawa na sirri ba a buƙatar kalmar farawa ba.
+Iyalai hudu da a buƙata duba: (1) Group Privacy ya kamata a rage — a [@BotFather](https://t.me/BotFather) aika `/setprivacy`, zaɓi bot ɗinka, kuma zaɓi **Disable**; idan privacy ke cikin, bot ba za i ganuwa waɗannan? (2) a buƙata kara bot zuwa group, (3) a buƙata ka ce kalmar haske — sunansa, misali `Vortex yaushe lokaci?` — bot kawai yana sauraron idan an ce sunansa a group, (4) a private chat ba a buƙata kalmar haske ba.
 
 **Bot din ya amsa da Turanci, ba harshen na ba.**
 Aiko `/admin` (mai mulki kawai) → Harshe & Ƙasa, kuma zaɓi harshen ka. Na gina shi kuma yana buƙatar harshe — danna Enter a nan don riƙonci na ƙasar ka.

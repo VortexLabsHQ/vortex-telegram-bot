@@ -38,7 +38,21 @@ Necesitas un servidor (o un ordenador que se quede encendido) con **Linux** y es
 | **systemd** | `systemctl --version` | `systemd 24x` o similar |
 | **Docker** *(opcional)* | `docker --version` | `Docker version 2x.x.x` — solo necesario si quieres la búsqueda web opcional SearXNG |
 
-Si falta algo, el instalador se ofrece a instalarlo por ti con `apt` (en Debian/Ubuntu). En otros sistemas, instálalo primero con tu gestor de paquetes.
+Si falta algo, instálalo todo con un solo comando (Debian/Ubuntu):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Para el Docker opcional (solo necesario si quieres la búsqueda web de SearXNG):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Después de la última línea, cierra sesión y vuelve a entrar (o ejecuta comandos `docker` con `sudo`). El instalador también te ofrece instalar las herramientas que falten con `apt` en Debian/Ubuntu. En otros sistemas, instálalas primero con tu gestor de paquetes. `systemd` viene con el sistema: no se puede instalar por separado.
 
 También necesitas dos cosas de Telegram (las dos son gratis):
 
@@ -84,7 +98,7 @@ Ahora abre Telegram y habla con tu bot:
 
 - Envía `/start` — el bot te saluda.
 - En un **chat privado**, solo escríbele — no hace falta palabra de activación.
-- En un **grupo**, añade el bot al grupo y luego di su nombre, por ejemplo: `Vortex what's the time?`
+- En un **grupo**, añade el bot al grupo, luego desactiva la Privacidad de grupo: en [@BotFather](https://t.me/BotFather) envía `/setprivacy`, elige tu bot y selecciona **Disable** — de lo contrario el bot no verá los mensajes del grupo ni escuchará su palabra de activación. Luego di su nombre, por ejemplo: `Vortex what's the time?`
 - Como jefe, envía `/admin` en un chat privado para abrir el panel de administración oculto.
 
 **Las actualizaciones son automáticas.** Una vez al día el bot busca en GitHub una nueva versión. Si hay una, te envía un mensaje privado con botones ✅ / ❌. Pulsa ✅ y se actualiza solo y se reinicia — nunca tienes que tocar el servidor.
@@ -160,7 +174,7 @@ El token viene de [@BotFather](https://t.me/BotFather). Asegúrate de copiar el 
 
 **El bot no responde en mi grupo.**
 
-Tres cosas que comprobar: (1) el bot debe estar añadido al grupo, (2) debes decir su palabra de activación — su nombre, por ejemplo `Vortex what's the time?` — el bot solo escucha cuando se dice su nombre en grupos, (3) en un chat privado no hace falta palabra de activación en absoluto.
+Cuatro cosas a verificar: (1) La Privacidad de grupo debe estar desactivada — en [@BotFather](https://t.me/BotFather) envía `/setprivacy`, elige tu bot y selecciona **Disable**; con la privacidad activada, el bot no verá ningún mensaje de grupo, (2) el bot debe haber sido añadido al grupo, (3) debes decir su palabra de activación — su nombre, por ejemplo `Vortex what's the time?` — el bot solo escucha cuando se menciona su nombre en grupos, (4) en un chat privado no se necesita ninguna palabra de activación.
 
 **El bot responde en inglés, no en mi idioma.**
 

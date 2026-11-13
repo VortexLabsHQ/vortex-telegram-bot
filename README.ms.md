@@ -38,7 +38,21 @@ Anda memerlukan pelayan (atau komputer yang sentiasa hidup) yang menjalankan **L
 | **systemd** | `systemctl --version` | `systemd 24x` atau serupa |
 | **Docker** *(pilihan)* | `docker --version` | `Docker version 2x.x.x` — hanya diperlukan jika anda mahu carian web SearXNG pilihan |
 
-Jika sesuatu hilang, pemasang menawarkan untuk memasangnya untuk anda dengan `apt` (pada Debian/Ubuntu). Pada sistem lain, pasang terlebih dahulu dengan pengurus pakej anda.
+Jika ada yang hilang, pasang semuanya dengan satu perintah (Debian/Ubuntu):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Untuk Docker pilihan (hanya diperlukan jika anda mahu carian web SearXNG):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Selepas baris terakhir, log keluar dan log masuk semula (atau jalankan perintah `docker` dengan `sudo`). Pemasang juga menawarkan untuk memasang alat yang hilang untuk anda dengan `apt` pada Debian/Ubuntu. Pada sistem lain, pasang terlebih dahulu dengan pengurus pakej anda. `systemd` datang bersama sistem — ia tidak boleh dipasang secara berasingan.
 
 Anda juga memerlukan dua perkara dari Telegram (kedua-duanya percuma):
 
@@ -84,7 +98,7 @@ Sekarang buka Telegram dan bercakap dengan bot anda:
 
 - Hantar `/start` — bot menyapa.
 - Dalam **cakap peribadi**, tulis terus kepadanya — tiada perkata bangun diperlukan.
-- Dalam **kumpulan**, tambah bot ke kumpulan, lalu sebut namanya, contohnya: `Vortex pukul berapa sekarang?`
+- Dalam **kumpulan**, tambah bot ke dalam kumpulan, kemudian matikan Privasi Kumpulan: di [@BotFather](https://t.me/BotFather) hantar `/setprivacy`, pilih bot anda, dan pilih **Disable** — jika tidak, bot tidak dapat melihat mesej kumpulan dan tidak akan mendengar kata bangunnya. Kemudian sebut namanya, contohnya: `Vortex pukul berapa sekarang?`
 - Sebagai boss, hantar `/admin` dalam cakap peribadi untuk buka panel admin tersembunyi.
 
 **Kemaskini automatik.** Sekali sehari bot semak GitHub untuk rilah baru. Jika ada, ia hantar mesej peribadi kepada anda dengan butang ✅ / ❌. Tekan ✅ dan ia kemaskini sendiri dan mulakan semula — anda tidak perlu sentuh server.
@@ -158,7 +172,7 @@ Bot memeriksa keluar GitHub `VortexLabsHQ/vortex-telegram-bot` sekali sehari. Ap
 Token berasal dari [@BotFather](https://t.me/BotFather). Pastikan anda menyalin keseluruhan token (digit, dua titik, kemudian 35+ aksara), tanpa ruang tambahan. Jika anda memadam bot atau membuat token baru, yang lama berhenti berfungsi — tampal yang baru.
 
 **Bot tidak menjawab dalam kumpulan saya.**
-Tiga perkara untuk diperiksa: (1) bot mesti ditambah ke kumpulan, (2) anda mesti sebut perkata bangunnya — namanya, contohnya `Vortex what's the time?` — bot hanya mendengar apabila namanya disebut dalam kumpulan, (3) dalam perbualan persendirian tiada perkata bangun diperlukan langsung.
+Empat perkara perlu disemak: (1) Privasi Kumpulan mesti dimatikan — di [@BotFather](https://t.me/BotFather) hantar `/setprivacy`, pilih bot anda, dan pilih **Disable**; dengan privasi aktif, bot tidak dapat melihat mesej kumpulan sama sekali, (2) bot mesti ditambah ke dalam kumpulan, (3) anda mesti sebut kata bangunnya — namanya, contohnya `Vortex pukul berapa sekarang?` — bot hanya mendengar apabila namanya disebut dalam kumpulan, (4) dalam perbualan persendirian tiada kata bangun diperlukan.
 
 **Bot menjawab dalam English, bukan bahasa saya.**
 Hantar `/admin` (bos sahaja) → Bahasa & Negara, dan pilih bahasa anda. Pemasang juga menanyakan bahasa — tekan Enter di sana untuk menerima lalai negara anda.

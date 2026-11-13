@@ -38,7 +38,21 @@ Szükséged van egy szerverre (vagy egy folyamatosan bekapcsolt számítógépre
 | **systemd** | `systemctl --version` | `systemd 24x` vagy hasonló |
 | **Docker** *(opcionális)* | `docker --version` | `Docker version 2x.x.x` — csak akkor kell, ha az opcionális SearXNG webes keresést akarod használni |
 
-Ha valami hiányzik, a telepítő felajánlja, hogy `apt`-val telepítse neked (Debian/Ubuntu esetén). Más rendszereken előbb a saját csomagkezelőddel telepítsd meg.
+Ha valami hiányzik, telepítsd mindent egy paranccsal (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Az opcionális `Docker`hoz (csak akkor kell, ha a `SearXNG` webkeresést szeretnéd):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Az utolsó sor után jelentkezz ki és be újra (vagy futtasd a `docker` parancsokat `sudo`val). A telepítő felajánlja, hogy `apt`-vel telepítse a hiányzó eszközöket `Debian/Ubuntu`-n. Más rendszereken előbb a csomagkezelővel telepítsd meg őket. A `systemd` a rendszerrel együtt jön — nem telepíthető külön.
 
 Kell még két dolog a Telegramból (mindkettő ingyenes):
 
@@ -84,7 +98,7 @@ Most nyisd meg a Telegramot és beszélgess a botoddal:
 
 - Küldd el a `/start` parancsot — a bot üdvözöl.
 - **Privát csevegésben** csak írd be az üzeneted — ébresztő szó nem kell.
-- **Csoportban** add hozzá a botot a csoporthoz, majd mondd ki a nevét, pl.: `Vortex hány óra van?`
+- **Csoportban**ban add hozzá a botot a csoporthoz, majd kapcsold ki a Csoportadatvédelmet: a [@BotFather](https://t.me/BotFather) küldd el a `/setprivacy` parancsot, válaszd ki a botodat, és válaszd a **Disable** opciót — különben a bot nem látja a csoport üzeneteit és nem hallja az ébresztő szót. Ezután mondd ki a nevét, például: `Vortex hány óra van?`
 - Főadminként küldd el az `/admin` parancsot privát csevegésben a rejtett admin panel megnyitásához.
 
 **A frissítések automatikusan történnek.** Naponta egyszer a bot ellenőrzi a GitHubon, hogy van-e új kiadás. Ha igen, privát üzenetben küldi el ✅ / ❌ gombokkal. Nyomd meg a ✅-ot, és az automatikusan frissül és újraindul — soha nem kell hozzányúlni a szerverhez.
@@ -158,7 +172,7 @@ A bot naponta egyszer ellenőrzi a `VortexLabsHQ/vortex-telegram-bot` GitHub kia
 A token a [@BotFather](https://t.me/BotFather) oldalról származik. Győződj meg róla, hogy az egész token másolva van (számjegyek, egy kettőspont, majd 35+ karakter), felesleges szóközök nélkül. Ha törölted a botot vagy készítettél egy új tokent, a régi leáll — illeszd be az újat.
 
 **A bot nem válaszol a csoportomban.**
-Három dolgot érdemes ellenőrizni: (1) a botot hozzá kell adni a csoporthoz, (2) az ébresztő szót kell mondani — a nevét, például `Vortex hány óra van?` — a bot csak akkor figyel csoportokban, ha a nevét mondják, (3) privát csevegésben egyáltalán nem kell ébresztő szó.
+Négy dolog, amit ellenőrizni kell: (1) A csoport adatvédelme ki kell legyen kapcsolva — a [@BotFather](https://t.me/BotFather)-ben küldd el a `/setprivacy` parancsot, válaszd ki a botodat, és válaszd a **Disable** opciót; ha az adatvédelem be van kapcsolva, a bot nem látja a csoport üzeneteit egyáltalán, (2) a botot hozzá kell adni a csoporthoz, (3) ki kell mondanod az ébresztő szót — a nevét, például `Vortex hány óra van?` — a bot csak akkor figyel, ha a nevét mondják ki a csoportokban, (4) privát csevegésben egyáltalán nem kell ébresztő szó.
 
 **A bot angolul válaszol, nem a nyelvemen.**
 Küldd el a `/admin` parancsot (csak a gazda) → Nyelv és Ország, és válaszd ki a nyelved. A telepítő is kérdezi a nyelvet — nyomj Entert ott az országod alapértelmezettének elfogadásához.

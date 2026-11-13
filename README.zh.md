@@ -38,7 +38,21 @@ Vortex 是一个 Telegram 机器人，它驻留在你的群组和私聊中，使
 | **systemd** | `systemctl --version` | `systemd 24x` 或类似版本 |
 | **Docker** *(可选)* | `docker --version` | `Docker version 2x.x.x` — 仅当你想要可选的 SearXNG 网页搜索时需要 |
 
-如果缺少某项，安装程序会提议用 `apt` 帮你安装（适用于 Debian/Ubuntu）。其他系统请先用自己的包管理器安装。
+如果缺少某些内容，请用一条命令安装所有内容（`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+对于可选的 `docker`（仅在你需要 `SearXNG` 网页搜索时才需要):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+在最后一行之后，请注销并重新登录（或使用 `sudo` 运行 `docker` 命令）。安装程序还会提议在 `Debian/Ubuntu` 上用 `apt` 为你安装缺失的工具。在其他系统上，请先用包管理器安装它们。`systemd` 随系统自带，无法单独安装。
 
 你还需要从 Telegram 获取两样东西（都是免费的）：
 
@@ -84,7 +98,7 @@ journalctl -u vortex-bot -f
 
 - 发送 `/start` — 机器人会打招呼。
 - 在**私聊**中，直接发消息给它 — 不需要唤醒词。
-- 在**群组**中，将机器人添加到群组，然后呼唤它的名字，例如：`Vortex what's the time?`
+- 在**群组** 中，将机器人添加到群组，然后关闭群组隐私：在 [@BotFather](https://t.me/BotFather) 发送 `/setprivacy`，选择你的机器人，并选择 **Disable** —— 否则机器人无法看到群组消息，也听不到唤醒词。然后说出它的名字，例如：`Vortex what's the time?`
 - 作为管理员，在私聊中发送 `/admin` 以打开隐藏的管理面板。
 
 **更新是自动的。** 机器人每天检查一次 GitHub 是否有新版本。如果有新版本，它会发送一条带有 ✅ / ❌ 按钮的私信给您。点击 ✅，它会自动更新并重启 — 您永远不需要操作服务器。
@@ -158,7 +172,7 @@ Vortex 支持 **195 个国家** 和 **40 种语言**。国家决定时区、价�
 令牌来自 [@BotFather](https://t.me/BotFather)。请确保复制了完整的令牌（数字、一个冒号，然后是 35 个以上字符），没有多余空格。如果你删除了机器人或生成了新令牌，旧令牌将失效 —— 请粘贴新令牌。
 
 **机器人在群组中不回复。**
-检查三点：(1) 机器人必须已加入群组，(2) 你必须说出它的唤醒词 —— 即它的名字，例如 `Vortex what's the time?` —— 机器人只在群组中听到其名字时才会响应，(3) 在私聊中完全不需要唤醒词。
+需检查四项：(1) 群组隐私必须关闭 — 在 [@BotFather](https://t.me/BotFather) 发送 `/setprivacy`，选择你的机器人，并选择 **Disable**；若隐私开启，机器人完全无法看到群组消息，(2) 机器人必须已添加到群组，(3) 必须说出唤醒词 — 即它的名字，例如 `Vortex what's the time?` — 机器人仅在群组中听到其名字时才会响应，(4) 在私聊中完全不需要唤醒词。
 
 **机器人用英语回复，而不是我的语言。**
 发送 `/admin`（仅限管理员）→ 语言与国家，选择你的语言。安装程序也会询问语言 —— 在那里按回车键即可接受你所在国家的默认语言。

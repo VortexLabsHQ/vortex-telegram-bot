@@ -38,7 +38,21 @@ Du har brug for en server (eller en computer, der forbliver tændt) der kører *
 | **systemd** | `systemctl --version` | `systemd 24x` eller lignende |
 | **Docker** *(valgfri)* | `docker --version` | `Docker version 2x.x.x` — kun nødvendig hvis du vil have den valgfrie SearXNG-websøgning |
 
-Hvis noget mangler, tilbyder installeren at installere det for dig med `apt` (på Debian/Ubuntu). På andre systemer, installer det med din pakkehåndterer først.
+Hvis noget mangler, installer alt med én kommando (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Til den valgfrie `Docker` (kun nødvendig, hvis du vil have `SearXNG` web-søgning):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Efter den sidste linje, log ud og ind igen (eller kør `docker`-kommandoer med `sudo`). Installationsprogrammet tilbyder også at installere manglende værktøjer for dig med `apt` på `Debian/Ubuntu`. På andre systemer skal du installere dem med din pakkehåndterer først. `systemd` følger med systemet — det kan ikke installeres separat.
 
 Du har også brug for to ting fra Telegram (begge er gratis):
 
@@ -84,7 +98,7 @@ journalctl -u vortex-bot -f
 
 - Send `/start` — botten siger hej.
 - I en **privat chat**, skriv bare til den — intet vækkeord nødvendigt.
-- I en **gruppe**, tilføj botten til gruppen, og sig så dets navn, f.eks.: `Vortex what's the time?`
+- I en **gruppe**, tilføj botten til gruppen, slå derefter gruppeprivatliv fra: i [@BotFather](https://t.me/BotFather) send `/setprivacy`, vælg din bot, og vælg **Disable** — ellers kan botten ikke se gruppemeddelelser og vil ikke høre sit vækkeord. Så sig dets navn, for eksempel: `Vortex what's the time?`
 - Som boss, send `/admin` i en privat chat for at åbne det skjulte admin-panel.
 
 **Opdateringer er automatiske.** En gang om dagen tjekker botten GitHub efter et nyt release. Hvis der er et tilgængeligt, sender den dig en privat besked med ✅ / ❌ knapper. Tryk ✅, og den opdaterer sig selv og genstarter — du behøver aldrig at røre serveren.
@@ -158,7 +172,7 @@ Botten tjekker GitHub-udgivelser af `VortexLabsHQ/vortex-telegram-bot` én gang 
 Token kommer fra [@BotFather](https://t.me/BotFather). Sørg for at du kopierede hele token (cifre, et kolon, så 35+ tegn), uden ekstra mellemrum. Hvis du slettede botten eller lavede en ny token, slutter den gamle med at virke — indsæt den nye.
 
 **Botten svarer ikke i min gruppe.**
-Tre ting at tjekke: (1) botten skal være tilføjet til gruppen, (2) du skal sige dets vækkeord — dets navn, for eksempel `Vortex what's the time?` — botten lytter kun, når dets navn nævnes i grupper, (3) i en privat chat er intet vækkeord nødvendigt overhovedet.
+Fire ting at tjekke: (1) Gruppeprivatliv skal være slået fra — i [@BotFather](https://t.me/BotFather) send `/setprivacy`, vælg din bot, og vælg **Disable**; med privatlivslind til, kan botten ikke se gruppemeddelelser overhovedet, (2) botten skal være tilføjet til gruppen, (3) du skal sige dets vækkeord — dets navn, for eksempel `Vortex what's the time?` — botten lytter kun, når dets navn nævnes i grupper, (4) i en privat chat er intet vækkeord nødvendigt.
 
 **Botten svarer på engelsk, ikke mit sprog.**
 Send `/admin` (kun chef) → Sprog & Land, og vælg dit sprog. Installationsprogrammet spørger også om sproget — tryk Enter der for at acceptere dit lands standard.

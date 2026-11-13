@@ -38,7 +38,21 @@ Sie brauchen einen Server (oder einen Computer, der an bleibt) mit **Linux** und
 | **systemd** | `systemctl --version` | `systemd 24x` oder ähnlich |
 | **Docker** *(optional)* | `docker --version` | `Docker version 2x.x.x` — nur nötig, wenn Sie die optionale SearXNG-Websuche wollen |
 
-Fehlt etwas, bietet der Installer an, es mit `apt` zu installieren (auf Debian/Ubuntu). Auf anderen Systemen installieren Sie es vorher mit Ihrem Paketmanager.
+Falls etwas fehlt, installieren Sie alles mit einem Befehl (Debian/Ubuntu):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Für das optionale Docker (nur erforderlich, wenn Sie die SearXNG-Websuche möchten):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Nach der letzten Zeile melden Sie sich ab und wieder an (oder führen Sie `docker`-Befehle mit `sudo` aus). Das Installationsprogramm bietet auch an, fehlende Tools für Sie mit `apt` unter Debian/Ubuntu zu installieren. Auf anderen Systemen installieren Sie diese zuerst mit Ihrem Paketmanager. `systemd` gehört zum System — es kann nicht separat installiert werden.
 
 Sie brauchen auch zwei Dinge von Telegram (beide sind kostenlos):
 
@@ -84,7 +98,7 @@ journalctl -u vortex-bot -f
 
 - Senden Sie `/start` — der Bot begrüßt Sie.
 - In einem **privaten Chat** schreiben Sie einfach — kein Weckwort nötig.
-- In einer **Gruppe** fügen Sie den Bot hinzu und sagen Sie seinen Namen, zum Beispiel: `Vortex wie spät ist es?`
+- In einer **Gruppe**, füge den Bot der Gruppe hinzu, dann deaktiviere die Gruppenprivatsphäre: in [@BotFather](https://t.me/BotFather) send `/setprivacy`, wähle deinen Bot, und wähle **Disable** — andernfalls kann der Bot keine Gruppennachrichten sehen und hört sein Weckwort nicht. Dann sage seinen Namen, zum Beispiel: `Vortex wie spät ist es?`
 - Als Chef senden Sie `/admin` in einem privaten Chat, um das versteckte Admin-Panel zu öffnen.
 
 **Updates sind automatisch.** Einmal täglich prüft der Bot GitHub auf eine neue Version. Wenn eine verfügbar ist, sendet er Ihnen eine private Nachricht mit ✅ / ❌-Buttons. Tippen Sie ✅ und er aktualisiert sich selbst und startet neu — Sie müssen den Server nie anfassen.
@@ -158,7 +172,7 @@ Der Bot prüft einmal täglich die GitHub-Releases von `VortexLabsHQ/vortex-tele
 Der Token kommt von [@BotFather](https://t.me/BotFather). Stellen Sie sicher, dass Sie den ganzen Token kopiert haben (Ziffern, ein Doppelpunkt, dann 35+ Zeichen), ohne zusätzliche Leerzeichen. Wenn Sie den Bot gelöscht oder einen neuen Token erstellt haben, funktioniert der alte nicht mehr — fügen Sie den neuen ein.
 
 **Der Bot antwortet in meiner Gruppe nicht.**
-Drei Dinge prüfen: (1) der Bot muss der Gruppe hinzugefügt sein, (2) Sie müssen sein Weckwort sagen — seinen Namen, zum Beispiel `Vortex wie spät ist es?` — der Bot hört in Gruppen nur, wenn sein Name gesagt wird, (3) in einem privaten Chat ist gar kein Weckwort nötig.
+Vier Dinge zu prüfen: (1) Gruppenprivatsphäre muss deaktiviert sein — in [@BotFather](https://t.me/BotFather) send `/setprivacy`, wähle deinen Bot, und wähle **Disable**; bei aktivierter Privatsphäre kann der Bot überhaupt keine Gruppennachrichten sehen, (2) der Bot muss der Gruppe hinzugefügt werden, (3) du musst sein Weckwort sagen — seinen Namen, zum Beispiel `Vortex wie spät ist es?` — der Bot hört nur, wenn sein Name in Gruppen genannt wird, (4) in einem privaten Chat ist kein Weckwort erforderlich.
 
 **Der Bot antwortet auf Englisch, nicht in meiner Sprache.**
 Senden Sie `/admin` (nur Chef) → Sprache & Land, und wählen Sie Ihre Sprache. Der Installer fragt auch nach der Sprache — drücken Sie dort Enter, um den Standard Ihres Landes zu übernehmen.

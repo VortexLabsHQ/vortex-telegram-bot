@@ -38,7 +38,21 @@ Bạn cần một máy chủ (hoặc một máy tính luôn bật) chạy **Linu
 | **systemd** | `systemctl --version` | `systemd 24x` hoặc tương tự |
 | **Docker** *(tùy chọn)* | `docker --version` | `Docker version 2x.x.x` — chỉ cần nếu bạn muốn tìm kiếm web SearXNG tùy chọn |
 
-Nếu thiếu thứ gì, trình cài đặt sẽ đề nghị cài đặt nó cho bạn bằng `apt` (trên Debian/Ubuntu). Trên các hệ thống khác, hãy cài đặt nó bằng trình quản lý gói của bạn trước.
+Nếu thiếu thứ gì, hãy cài đặt tất cả bằng một lệnh (`Debian/Ubuntu`):
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git curl
+```
+
+Đối với `Docker` tùy chọn (chỉ cần nếu bạn muốn tìm kiếm web `SearXNG`):
+
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Sau dòng cuối cùng, hãy đăng xuất và đăng nhập lại (hoặc chạy lệnh `docker` với `sudo`). Trình cài đặt cũng đề nghị cài đặt các công cụ còn thiếu cho bạn bằng `apt` trên `Debian/Ubuntu`. Trên các hệ thống khác, hãy cài đặt chúng bằng trình quản lý gói trước. `systemd` đi kèm với hệ thống — không thể cài đặt riêng biệt.
 
 Bạn cũng cần hai thứ từ Telegram (cả hai đều miễn phí):
 
@@ -84,7 +98,7 @@ Bây giờ mở Telegram và nói chuyện với bot của bạn:
 
 - Gửi `/start` — bot chào hỏi.
 - Trong **chat riêng**, chỉ cần viết cho nó — không cần từ khóa đánh thức.
-- Trong **nhóm**, thêm bot vào nhóm, rồi nói tên nó, ví dụ: `Vortex mấy giờ rồi?`
+- Trong một **nhóm**, thêm bot vào nhóm, sau đó tắt Quyền riêng tư nhóm: trong [@BotFather](https://t.me/BotFather) gửi `/setprivacy`, chọn bot của bạn, và chọn **Disable** — nếu không bot sẽ không thấy tin nhắn nhóm và không nghe từ khóa đánh thức. Sau đó nói tên của nó, ví dụ: `Vortex mấy giờ rồi?`
 - Là Boss, gửi `/admin` trong chat riêng để mở bảng điều khiển ẩn.
 
 **Cập nhật tự động.** Mỗi ngày bot kiểm tra GitHub xem có bản phát hành mới không. Nếu có, nó gửi tin nhắn riêng cho bạn với nút ✅ / ❌. Bấm ✅ và nó tự cập nhật và khởi động lại — bạn không bao giờ cần chạm vào server.
@@ -158,7 +172,7 @@ Bot kiểm tra bản phát hành GitHub của `VortexLabsHQ/vortex-telegram-bot`
 Token lấy từ [@BotFather](https://t.me/BotFather). Hãy chắc chắn bạn sao chép toàn bộ token (số, dấu hai chấm, rồi 35+ ký tự), không có khoảng trắng thừa. Nếu bạn xóa bot hoặc tạo token mới, token cũ ngừng hoạt động — dán token mới vào.
 
 **Bot không trả lời trong nhóm của tôi.**
-Ba điều cần kiểm tra: (1) bot phải được thêm vào nhóm, (2) bạn phải nói từ khóa đánh thức — tên của nó, ví dụ `Vortex what's the time?` — bot chỉ lắng nghe khi tên nó được nói trong nhóm, (3) trong trò chuyện riêng không cần từ khóa đánh thức.
+Bốn điều cần kiểm tra: (1) Quyền riêng tư nhóm phải tắt — trong [@BotFather](https://t.me/BotFather) gửi `/setprivacy`, chọn bot của bạn, và chọn **Disable**; khi bật quyền riêng tư, bot sẽ không thấy tin nhắn nhóm nào cả, (2) bot phải được thêm vào nhóm, (3) bạn phải nói từ khóa đánh thức — tên của nó, ví dụ `Vortex mấy giờ rồi?` — bot chỉ lắng nghe khi tên của nó được nói trong nhóm, (4) trong trò chuyện riêng thì không cần từ khóa đánh thức nào cả.
 
 **Bot trả lời bằng English, không phải ngôn ngữ của tôi.**
 Gửi `/admin` (chỉ boss) → Language & Country, và chọn ngôn ngữ của bạn. Cài đặt cũng hỏi ngôn ngữ — nhấn Enter đó để chấp nhận mặc định của quốc gia bạn.
