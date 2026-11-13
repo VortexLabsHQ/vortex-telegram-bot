@@ -271,11 +271,15 @@ class Database:
         self.set_setting("language", value)
 
     def get_image_model(self) -> str:
-        """Image-generation choice: 'duckai' (free, default),
-        'hilinkup:<model>' (that HiLinkUp image model first), 'custom'
-        (the custom provider in get_image_provider), or 'none' (image
-        generation disabled)."""
-        return self.get_setting("image_model", "duckai") or "duckai"
+        """Image-generation choice: 'custom' (the image provider the
+        owner added, see get_image_provider) or 'none' (image
+        generation disabled). Legacy stored values (the removed free
+        provider and 'hilinkup:<model>') map to 'none' so old installs
+        keep working; there is no built-in image provider."""
+        raw = self.get_setting("image_model", "none") or "none"
+        if raw in ("custom", "none"):
+            return raw
+        return "none"
 
     def set_image_model(self, value: str) -> None:
         """Persist the image-generation choice."""

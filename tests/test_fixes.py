@@ -109,12 +109,8 @@ print("C10/C11/C12 image prompts")
 check("عکسامو دیدی؟ not an image",
       security.extract_image_prompt("عکسامو دیدی؟") is None,
       repr(security.extract_image_prompt("عکسامو دیدی؟")))
-check("عکس رو کارتونی کن is an edit",
-      security.extract_image_edit_prompt("عکس رو کارتونی کن") is not None)
-check("اینو کیوت کن is NOT a question (so it is an edit)",
-      not security._IMAGE_EDIT_QUESTION_RE.search("اینو کیوت کن"))
-check("اینو کیو؟ IS a question",
-      bool(security._IMAGE_EDIT_QUESTION_RE.search("اینو کیو؟")))
+check("photo-edit helper removed",
+      not hasattr(security, "extract_image_edit_prompt"))
 
 # ---------- D21/D22: dollar ----------
 print("D21/D22 dollar")

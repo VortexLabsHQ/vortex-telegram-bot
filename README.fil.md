@@ -16,7 +16,7 @@ Ito ay tumatakbo sa iyong sariling server, sa iyong sariling bansa at wika. Ikaw
 
 - 💬 **AI chat** sa mga grupo (wake word) at private chats (walang kailangang wake word)
 - 🔑 **Token pool** — gamitin ang maramihang LLM providers at keys, i-rotate at fail over nang automatic
-- 🖼️ **Image generation at editing** — libre (DuckAI) o bayad na providers
+- 🖼️ **Image generation** — gamit ang iyong sariling image service (base URL + API key + model), idinagdag sa `/admin`
 - 🔍 **Web search** — self-hosted na SearXNG, may Wikipedia fallback
 - 💰 **Live prices** — currencies, ginto, langis, at crypto sa iyong local currency
 - 🕌 **Prayer times**, 🃏 **fortunes**, 😄 **jokes**, 🎲 **dice at coin flips**
@@ -145,7 +145,7 @@ Ipadala ang `/admin` sa private chat (boss lang — walang iba maaaring buksan, 
 - 👥 **Users** — bilang ng user, ban / unban, allowlist
 - 📊 **Stats** — mga numero ng paggamit
 - 💬 **Recent chats** — ano ang sinabi ng tao sa bot (boss lang, private)
-- 🖼️ **Image model** — DuckAI (libre, default), HiLinkUp, custom image service, o off
+- 🖼️ **Image model** — iyong sariling image service (base URL + API key + model), o off
 - 🛡️ **Managers** — bigyan ng access ang tiwala mong tao sa mga parte ng panel
 - 🟢/🔴 **Power** — i-on o i-off ang bot para sa lahat (ang boss ay nananatiling nasa kontrol)
 - 🌍 **Language & Country** — baguhin ang wika o bansa ng bot anumang oras
@@ -156,7 +156,7 @@ Ang bot ay maaaring mag-imbak ng key mula sa maramihang LLM provider sabay-sabay
 
 ### Mga Imahe
 
-Ang image generation ay may tatlong mode: **DuckAI** (libre, walang key, default), **HiLinkUp** (bayad, mas magandang quality), o **custom** na OpenAI-compatible image service. Maaari mo ring ipadala sa bot ang larawan at sabihin kung paano ito i-edit ("gawing cartoon style"), at gagawa ito ng bagong larawan. Ang image generation ay maaaring i-off mula sa `/admin`.
+Ang image generation ay gumagamit ng iyong sariling OpenAI-compatible image service: idagdag ang base URL, API key, at model sa `/admin` (🖼️ Image model). Walang built-in image provider, at hindi suportado ang photo editing. Maaaring i-off ang image generation mula sa `/admin`.
 
 ### Mga Bansa at Wika
 

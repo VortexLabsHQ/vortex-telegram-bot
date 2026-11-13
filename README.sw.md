@@ -16,7 +16,7 @@ Inaendeshwa kwenye seva yako mwenyewe, nchini mwako na lugha yako. Wewe ni mkuu:
 
 - 💬 **Mazungumzo ya AI** kwenye vikundi (neno la kuamka) na mazungumzo binafsi (hahitaji neno la kuamka)
 - 🔑 **Kikoba cha vitufe** — tumia watoa huduma wengi wa LLM na vitufe, rudisha na fail over kiotomatiki
-- 🖼️ **Uundaji na uhariri wa picha** — bure (DuckAI) au watoa huduma walio na malipo
+- 🖼️ **Uundaji wa picha** — kwa huduma yako ya picha (URL msingi + kifungu cha API + modeli), iliyoongezwa kwenye `/admin`
 - 🔍 **Utafutaji mtandaoni** — SearXNG ya self-hosted, na Wikipedia kama chaguo la pamoja
 - 💰 **Bei za wakati halisi** — sarafu, dhahabu, mafuta, na crypto kwenye sarafu yako ya kienyeji
 - 🕌 **Muda wa sala**, 🃏 **matabiri**, 😄 **michezo**, 🎲 **kubisha na kiflip cha sarafu**
@@ -145,7 +145,7 @@ Tuma `/admin` kwenye mazungumzo ya binafsi (boss pekee — mtu mwingine hawezi k
 - 👥 **Users** — idadi ya watumiaji, kucheka / kuondoa kucheka, orodha ya ruhusa
 - 📊 **Stats** — nambari za matumizi
 - 💬 **Recent chats** — watu walichosema kwa bot (boss pekee, binafsi)
-- 🖼️ **Image model** — DuckAI (bure, chaguo-msingi), HiLinkUp, huduma ya picha ya kipekee, au zima
+- 🖼️ **Modeli ya picha** — huduma yako ya picha (URL msingi + kifungu cha API + modeli), au zima
 - 🛡️ **Managers** — wape watu wa kuaminiwa ufikiaji kwa sehemu za paneli
 - 🟢/🔴 **Power** — fungua au zima bot kwa wote (boss anaendelea kudhibiti)
 - 🌍 **Language & Country** — badilisha lugha au nchi ya bot wakati wowote
@@ -156,7 +156,7 @@ Bot inaweza kuhifadhi vitufe kutoka kwa watoa huduma wengi wa LLM kwa wakati mmo
 
 ### Picha
 
-Uundaji wa picha una mwelekeo tatu: **DuckAI** (bure, hakuna kifungu, chaguo-msingi), **HiLinkUp** (kilipwa, ubora bora), au huduma ya picha ya **kuchagua** inayolingana na OpenAI yako mwenyewe. Unaweza pia kutuma bot picha na kuambia jinsi ya kuhariri ("fanya hii ya mtindo wa kartuni"), na itaundaa picha mpya. Uundaji wa picha unaweza kuzimwa kutoka `/admin`.
+Uundaji wa picha unatumia huduma yako ya picha inayolingana na OpenAI: ongeza URL yake ya msingi, kifungu cha API na modeli kwenye `/admin` (🖼️ Modeli ya picha). Hakuna mtoa huduma ya picha ya ndani, na uhariri wa picha haukosi msaada. Uundaji wa picha unaweza kuzimwa kutoka `/admin`.
 
 ### Nchi na lugha
 

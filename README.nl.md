@@ -16,7 +16,7 @@ Hij draait op je eigen server, in je eigen land en taal. Jij bent de baas: een v
 
 - 💬 **AI-chat** in groepen (wakewoord) en privéchats (geen wakewoord nodig)
 - 🔑 **Token-pool** — gebruik verschillende LLM-providers en sleutels, roteer en failover automatisch
-- 🖼️ **Afbeeldingen genereren en bewerken** — gratis (DuckAI) of betaalde providers
+- 🖼️ **Afbeeldingsgeneratie** — met uw eigen afbeeldingsservice (basis-URL + API-sleutel + model), toegevoegd in `/admin`
 - 🔍 **Webzoeken** — zelfgehoste SearXNG, met Wikipedia als fallback
 - 💰 **Live prijzen** — valuta, goud, olie en crypto in je lokale valuta
 - 🕌 **Gebedstijden**, 🃏 **voorspellingen**, 😄 **moppen**, 🎲 **dobbelstenen en muntjes**
@@ -145,7 +145,7 @@ Stuur `/admin` in een privéchat (alleen baas — niemand anders kan het openen,
 - 👥 **Gebruikers** — gebruikerstellingen, bannen / deblokkeren, allowlist
 - 📊 **Statistieken** — gebruiksgetallen
 - 💬 **Recente chats** — wat mensen tegen de bot zeiden (alleen baas, privé)
-- 🖼️ **Afbeeldingsmodel** — DuckAI (gratis, standaard), HiLinkUp, een eigen aangepaste afbeeldingsservice, of uit
+- 🖼️ **Afbeeldingsmodel** — uw eigen afbeeldingsservice (basis-URL + API-sleutel + model), of uit
 - 🛡️ **Managers** — vertrouwde mensen toegang geven tot delen van het paneel
 - 🟢/🔴 **Aan/uit** — de bot aan of uit zetten voor iedereen (baas blijft in controle)
 - 🌍 **Taal & Land** — de taal of het land van de bot op elk moment wijzigen
@@ -156,7 +156,7 @@ De bot kan sleutels van meerdere LLM-providers tegelijk houden. Hij roteert tuss
 
 ### Afbeeldingen
 
-Afbeeldingsgeneratie heeft drie modi: **DuckAI** (gratis, geen sleutel, standaard), **HiLinkUp** (betaald, betere kwaliteit), of een **eigen** OpenAI-compatibele afbeeldingsservice. Je kunt de bot ook een foto sturen en vertellen hoe hij het moet bewerken ("maak dit cartoon-achtig"), en hij genereert een nieuwe afbeelding. Afbeeldingsgeneratie is via `/admin` uitschakelbaar.
+Afbeeldingsgeneratie gebruikt uw eigen OpenAI-compatibele afbeeldingsservice: voeg de basis-URL, API-sleutel en model toe in `/admin` (🖼️ Image model). Er is geen ingebouwde afbeeldingsprovider, en fotobewerking wordt niet ondersteund. Afbeeldingsgeneratie kan via `/admin` worden uitgeschakeld.
 
 ### Landen en talen
 

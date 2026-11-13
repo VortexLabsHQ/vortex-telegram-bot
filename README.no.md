@@ -16,7 +16,7 @@ Den kjører på din egen server, i ditt eget land og på ditt eget språk. Du er
 
 - 💬 **AI-chat** i grupper (vekkeord) og private chater (ingen vekkeord nødvendig)
 - 🔑 **Token-pool** — bruk flere LLM-leverandører og nøkler, roter og failover automatisk
-- 🖼️ **Bildegenerering og redigering** — gratis (DuckAI) eller betalte leverandører
+- 🖼️ **Bildegenerering** — med din egen bilde-tjeneste (base URL + API-nøkkel + modell), lagt til i `/admin`
 - 🔍 **Nettssøk** — selvhostet SearXNG, med Wikipedia som reserve
 - 💰 **Live priser** — valutaer, gull, olje og krypto i din lokale valuta
 - 🕌 **Bønnetider**, 🃏 **spådommer**, 😄 **vitser**, 🎲 **terningkast og myntkast**
@@ -145,7 +145,7 @@ Send `/admin` i en privat chat (kun boss — ingen andre kan åpne det, og det d
 - 👥 **Brukere** — brukerantall, ban / unban, tillatelsesliste
 - 📊 **Statistikk** — bruksnummer
 - 💬 **Nylige chat** — hva folk sa til boten (kun boss, privat)
-- 🖼️ **Bildemodell** — DuckAI (gratis, standard), HiLinkUp, en egendefinert biljetjeneste, eller av
+- 🖼️ **Bildemodell** — din egen bilde-tjeneste (base URL + API-nøkkel + modell), eller av
 - 🛡️ **Administratorer** — gi tillitspersoner tilgang til deler av panelet
 - 🟢/🔴 **Strøm** — slå boten på eller av for alle (boss beholder kontrollen)
 - 🌍 **Språk & Land** — endre botens språk eller land når som helst
@@ -156,7 +156,7 @@ Boten kan holde nøkler fra flere LLM-leverandører samtidig. Den roterer mellom
 
 ### Bilder
 
-Bildegenerering har tre moduser: **DuckAI** (gratis, ingen nøkkel, standard), **HiLinkUp** (betalt, bedre kvalitet), eller en **egendefinert** OpenAI-kompatibel biljetjeneste. Du kan også sende boten et bilde og si hvordan den skal redigere det ("gjøre dette til tegneseristil"), og den vil generere et nytt bilde. Bildegenerering kan slås av fra `/admin`.
+Bildegenerering bruker din egen OpenAI-kompatible bilde-tjeneste: legg til base URL, API-nøkkel og modell i `/admin` (🖼️ Bildemodell). Det finnes ingen innebygd bilde-leverandør, og bilde-redigering støttes ikke. Bildegenerering kan slås av fra `/admin`.
 
 ### Land og språk
 

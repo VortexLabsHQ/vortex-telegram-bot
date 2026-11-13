@@ -16,7 +16,7 @@ Den körs på din egen server, i ditt eget land och på ditt eget språk. Du är
 
 - 💬 **AI-chatt** i grupper (uppvakningsord) och privata chattar (inget uppvakningsord behövs)
 - 🔑 **Tokenpool** — använd flera LLM-leverantörer och nycklar, rotera och växla automatiskt
-- 🖼️ **Bildgenerering och redigering** — gratis (DuckAI) eller betalda leverantörer
+- 🖼️ **Bildgenerering** — med din egen bildtjänst (bas-URL + API-nyckel + modell), lagt till i `/admin`
 - 🔍 **Webbsökning** — självhostad SearXNG, med Wikipedia som reserv
 - 💰 **Live-priser** — valutor, guld, olja och krypto i din lokala valuta
 - 🕌 **Bönestider**, 🃏 **förutsägelser**, 😄 **skämt**, 🎲 **tärningar och myntkast**
@@ -145,7 +145,7 @@ Skicka `/admin` i en privat chatt (endast chef — ingen annan kan öppna den, o
 - 👥 **Användare** — antal användare, banna / avbanna, tillåtelselista
 - 📊 **Statistik** — användningssiffror
 - 💬 **Senaste chattar** — vad folk säger till botten (endast chef, privat)
-- 🖼️ **Bildmodell** — DuckAI (gratis, standard), HiLinkUp, en anpassad bildtjänst, eller av
+- 🖼️ **Bildmodell** — din egen bildtjänst (bas-URL + API-nyckel + modell), eller av
 - 🛡️ **Manager** — ge betrodda personer tillgång till delar av panelen
 - 🟢/🔴 **Ström** — slå på eller av botten för alla (chefen behåller kontrollen)
 - 🌍 **Språk & Land** — ändra botten språk eller land när som helst
@@ -156,7 +156,7 @@ Botten kan hålla nycklar från flera LLM-leverantörer samtidigt. Den växlar m
 
 ### Bilder
 
-Bildgenerering har tre lägen: **DuckAI** (gratis, ingen nyckel, standard), **HiLinkUp** (betald, bättre kvalitet), eller en **anpassad** OpenAI-kompatibel bildtjänst av din egen. Du kan också skicka en foto till botten och säga hur den ska redigeras ("gör den här till tecknad stil"), och den genererar en ny bild. Bildgenerering kan stängas av från `/admin`.
+Bildgenerering använder din egen OpenAI-kompatibla bildtjänst: lägg till dess bas-URL, API-nyckel och modell i `/admin` (🖼️ Bildmodell). Det finns ingen inbyggd bildleverantör, och fotoredigering stöds inte. Bildgenerering kan stängas av från `/admin`.
 
 ### Länder och språk
 

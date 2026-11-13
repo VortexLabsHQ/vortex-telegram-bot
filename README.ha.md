@@ -16,7 +16,7 @@ Tana aiki a server na kowa, a kasar kowa da harshen kowa. Kai ne mai mulki: wani
 
 - 💬 **AI tafarko** a kungiyoyi (kalmar fara) da rahotannin halitta (ba a buƙatar kalmar fara ba)
 - 🔑 **Kudin token** — amfani da masu tallafin LLM da kayanai daban-daban, juyawa da canza a halin kuskure a takaice
-- 🖼️ **Samar da hotuna da gyara** — kyauta (DuckAI) ko masu tallafin biyan kuɗi
+- 🖼️ **Samar da hotuna** — da sabis na hotuna na ka (base URL + API key + model), da aka zuba a `/admin`
 - 🔍 **Binciken wab** — an gudana da SearXNG a cikin gida, da Wikipedia a matsayin baya
 - 💰 **Farashin yanzu** — kurudda, zariya, manja, da crypto a kurdin gida
 - 🕌 **Lokacin salatu**, 🃏 **fa'aloli**, 😄 **darajar**, 🎲 **kwari da gwargwado na kudi**
@@ -145,7 +145,7 @@ Aika `/admin` a cikin tattaunawa na shakato (mai mulki kawai — babu wani mai b
 - 👥 **Users** — adadin masu amfani, harjo / cire harjo, jerin masu izini
 - 📊 **Stats** — lambobin amfani
 - 💬 **Recent chats** — abinda mutane suka ce wa bot (mai mulki kawai, shakato)
-- 🖼️ **Image model** — DuckAI (kyauta, default), HiLinkUp, sabis na hotuna na custom, ko sakeshi
+- 🖼️ **Modelin hotuna** — sabis na hotuna na ka (base URL + API key + model), ko sakeshi
 - 🛡️ **Managers** — ba mutanen da aka amince wa adireshin nau'in panel
 - 🟢/🔴 **Power** — saita bot on ko off ga duk wani (mai mulki ya rage mulki)
 - 🌍 **Language & Country** — canza harshen bot ko kasarsa a kowace lokaci
@@ -156,7 +156,7 @@ Bot zai iya halar da ƙalubale daga masu tallafin LLM da yawa a lokaci daya. Yan
 
 ### Hotuna
 
-Samar da hotuna tana da hanyen uku: **DuckAI** (kyauta, ba ƙalubale, default), **HiLinkUp** (biya, inganci mafi kyau), ko sabis na hotuna na **custom** da ya dace da OpenAI na ka. Za ka iya aika bot hoton kuma ka ce masa yadda ake gyarata ("yi wannan nau'in kartun"), kuma zai samar da hoton sabuwa. Samar da hotuna za a iya sakeshi daga `/admin`.
+Samar da hotuna tana amfani da sabis na hotuna na ka da ya dace da OpenAI: zuba base URL, API key da model a `/admin` (🖼️ Modelin hotuna). Ba a da sabis na hotuna na asali, kuma gyara hotuna ba a tallafawa ba. Za a iya sakeshi samar da hotuna daga `/admin`.
 
 ### Kasashe da Harsuna
 

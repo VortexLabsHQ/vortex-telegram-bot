@@ -135,7 +135,6 @@ from bot.security import (
     extract_calc_expr,
     extract_download_url,
     extract_image_add_prompt,
-    extract_image_edit_prompt,
     extract_image_prompt,
     extract_prayer_city,
     extract_price_currency,
@@ -261,7 +260,6 @@ _ADMIN_ROUTE_PERMS = {
     "chats": "chats",
     "image": "image",
     "setimage": "image",
-    "imagemodels": "image",
     "addimage": "image",
     "removeimage": "image",
     "power": "power",
@@ -475,9 +473,6 @@ class VortexBotHandlers:
         # Admin locale (🌐 Language & Country) country-browser state:
         # user id -> {"page": int}. In-memory only; a restart clears it.
         self._admin_locale: dict[int, dict] = {}
-        # Admin image-models browser: boss user id -> [HiLinkUp image
-        # model ids] (fetched live, in-memory only).
-        self._admin_image_models: dict[int, list[str]] = {}
 
     def _get_last_image_prompt(self, chat_id: int, user_id: int) -> str | None:
         """The remembered image prompt for this (chat, user), or None
@@ -643,15 +638,6 @@ class VortexBotHandlers:
         )
         return InlineKeyboardMarkup(rows)
 
-    def _hilinkup_key(self) -> tuple[str, str] | None:
-        """A (base_url, key) pair for the HiLinkUp provider from the pool,
-        for the image-models browser. None when no HiLinkUp key is in the
-        pool."""
-        for e in self.llm_client.token_pool.entries:
-            if "hilinkup" in e.base_url:
-                return (e.base_url, e.key)
-        return None
-
     def _admin_model_keys_keyboard(self) -> InlineKeyboardMarkup:
         """Buttons for the 'models of a key' browser: one per DISTINCT key
         in the pool (a key can serve several models, so entries are
@@ -659,11 +645,11 @@ class VortexBotHandlers:
         rows: list[list[InlineKeyboardButton]] = []
         for idx, (base_url, key) in enumerate(self._distinct_admin_keys()):
             host = urlparse(base_url).netloc or base_url
-            fp = (key[:9] + "…" + key[-4:]) if len(key) > 13 else key
+            fp = (key[:9] + "\u2026" + key[-4:]) if len(key) > 13 else key
             rows.append(
                 [
                     InlineKeyboardButton(
-                        f"{host} — {fp}",
+                        f"{host} \u2014 {fp}",
                         callback_data=f"admin:models:{idx}",
                     )
                 ]
@@ -685,8 +671,8 @@ class VortexBotHandlers:
         return out
 
     def _admin_models_keyboard(self, user_id: int) -> InlineKeyboardMarkup:
-        """One page of the models browser: up to 10 model buttons (⭐ on
-        the active model of this key, ✓ on models already in the pool),
+        """One page of the models browser: up to 10 model buttons (\u2b50 on
+        the active model of this key, \u2713 on models already in the pool),
         a prev/next row, and back to the keys list."""
         state = self._admin_models.get(user_id, {})
         models: list[str] = state.get("models", [])
@@ -702,12 +688,12 @@ class VortexBotHandlers:
         rows: list[list[InlineKeyboardButton]] = []
         for i, model in enumerate(models[start:start + _ADMIN_MODELS_PER_PAGE]):
             if active is not None and active.base_url == base_url and active.model == model:
-                mark = "⭐ "
+                mark = "\u2b50 "
             elif model in pool_models:
-                mark = "✓ "
+                mark = "\u2713 "
             else:
                 mark = ""
-            label = model if len(model) <= 45 else model[:44] + "…"
+            label = model if len(model) <= 45 else model[:44] + "\u2026"
             rows.append(
                 [
                     InlineKeyboardButton(
@@ -758,64 +744,64 @@ class VortexBotHandlers:
             return False, type(exc).__name__
 
     def _build_admin_image_text(self) -> str:
-        """Current image-generation choice for the /admin image section.
-        A custom provider's key is never shown in full (fingerprint
-        only)."""
-        choice = "duckai"
-        try:
-            choice = self.db.get_image_model() or "duckai"
-        except Exception:
-            pass
-        if choice == "duckai":
-            current = t("admin.image.duckai")
-        elif choice == "none":
-            current = t("admin.image.none")
-        elif choice.startswith("hilinkup:"):
-            current = t("admin.image.hilinkup", model=choice[len("hilinkup:"):])
-        elif choice == "custom":
+        """Image-model section: the current choice is either the owner's
+        own provider (base URL + API key + model, added in /admin) or
+        off. There is no built-in image provider."""
+        current = self.db.get_image_model()
+        if current == "custom":
             provider = self.db.get_image_provider()
             if provider is not None:
-                base, key, model = provider
-                host = urlparse(base).netloc or base
-                fp = (key[:9] + "…" + key[-4:]) if len(key) > 13 else "•••"
-                current = t("admin.image.custom", host=host, model=model, fp=fp)
+                base_url, key, model = provider
+                host = urlparse(base_url).netloc or base_url
+                fp = (key[:9] + "\u2026" + key[-4:]) if len(key) > 13 else key
+                current_line = t(
+                    "admin.image.custom", host=host, model=model, fp=fp
+                )
             else:
-                current = t("admin.image.custom_unset")
+                current_line = t("admin.image.custom_unset")
+        elif current == "none":
+            current_line = t("admin.image.none")
         else:
-            current = choice
-        lines = [t("admin.image.title"), "", t("admin.image.current", current=current)]
-        provider = None
-        try:
-            provider = self.db.get_image_provider()
-        except Exception:
-            pass
-        if provider is not None and choice != "custom":
-            base, key, model = provider
-            host = urlparse(base).netloc or base
-            fp = (key[:9] + "…" + key[-4:]) if len(key) > 13 else "•••"
-            lines.append(t("admin.image.saved", host=host, model=model, fp=fp))
-        lines.append(t("admin.image.pick"))
-        return "\n".join(lines)
+            # Legacy stored value (e.g. a removed built-in provider):
+            # treated as off.
+            current_line = t("admin.image.none")
+        return (
+            t("admin.image.title")
+            + "\n\n"
+            + t("admin.image.current", current=current_line)
+            + t("admin.image.pick")
+        )
 
     def _admin_image_keyboard(self) -> InlineKeyboardMarkup:
+        """Image section keyboard: add a custom service, set it, turn
+        images off, or remove the custom service."""
+        provider = self.db.get_image_provider()
         rows: list[list[InlineKeyboardButton]] = [
-            [InlineKeyboardButton(t("admin.image.duckai_btn"), callback_data="admin:setimage:duckai")],
-            [InlineKeyboardButton(t("admin.image.hilinkup_btn"), callback_data="admin:imagemodels")],
-        ]
-        try:
-            has_custom = self.db.get_image_provider() is not None
-        except Exception:
-            has_custom = False
-        if has_custom:
-            rows.append(
-                [InlineKeyboardButton(t("admin.image.custom_btn"), callback_data="admin:setimage:custom")]
-            )
-        rows.append(
             [InlineKeyboardButton(t("admin.image.add_btn"), callback_data="admin:addimage")]
-        )
-        if has_custom:
+        ]
+        if provider is not None:
             rows.append(
-                [InlineKeyboardButton(t("admin.image.remove_btn"), callback_data="admin:removeimage")]
+                [
+                    InlineKeyboardButton(
+                        t("admin.image.custom_btn"),
+                        callback_data="admin:setimage:custom",
+                    )
+                ]
+            )
+            rows.append(
+                [
+                    InlineKeyboardButton(
+                        t("admin.image.remove_btn"), callback_data="admin:removeimage"
+                    )
+                ]
+            )
+        else:
+            rows.append(
+                [
+                    InlineKeyboardButton(
+                        t("admin.image.custom_unset"), callback_data="admin:addimage"
+                    )
+                ]
             )
         rows.append(
             [InlineKeyboardButton(t("admin.image.off_btn"), callback_data="admin:setimage:none")]
@@ -826,7 +812,7 @@ class VortexBotHandlers:
         return InlineKeyboardMarkup(rows)
 
     def _build_admin_managers_text(self) -> str:
-        """Managers list for the boss-only 🛡 مدیرها section."""
+        """Managers list for the boss-only \U0001f6e1 Managers section."""
         managers = self.db.list_managers(limit=20)
         lines = [t("admin.managers.title")]
         if not managers:
@@ -834,7 +820,7 @@ class VortexBotHandlers:
         for m in managers:
             perms = {p.strip() for p in (m.get("permissions") or "").split(",") if p.strip()}
             labels = ", ".join(_perm_label(p) for p in sorted(perms) if p in _ADMIN_PERMS) or t("admin.mgr.no_access")
-            lines.append(f"• {m['user_id']} — {labels}")
+            lines.append(f"\u2022 {m['user_id']} \u2014 {labels}")
         lines.append(t("admin.managers.hint"))
         return "\n".join(lines)
 
@@ -844,7 +830,7 @@ class VortexBotHandlers:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        f"🛡 {m['user_id']}",
+                        f"\U0001f6e1 {m['user_id']}",
                         callback_data=f"admin:mgr:{m['user_id']}",
                     )
                 ]
@@ -862,7 +848,7 @@ class VortexBotHandlers:
         perms = self.db.get_manager_perms(target)
         lines = [t("admin.mgr.detail_title", id=target)]
         for perm in _ADMIN_PERMS:
-            lines.append(f"{'✅' if perm in perms else '❌'} {_perm_label(perm)}")
+            lines.append(f"{'\u2705' if perm in perms else '\u274c'} {_perm_label(perm)}")
         lines.append(t("admin.mgr.detail_hint"))
         return "\n".join(lines)
 
@@ -870,7 +856,7 @@ class VortexBotHandlers:
         perms = self.db.get_manager_perms(target)
         rows: list[list[InlineKeyboardButton]] = []
         for perm in _ADMIN_PERMS:
-            mark = "✅ " if perm in perms else "❌ "
+            mark = "\u2705 " if perm in perms else "\u274c "
             rows.append(
                 [
                     InlineKeyboardButton(
@@ -972,7 +958,7 @@ class VortexBotHandlers:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        f"{host} — {e['model']} — {e['key_fp']}",
+                        f"{host} \u2014 {e['model']} \u2014 {e['key_fp']}",
                         callback_data=f"admin:rm:{idx}",
                     )
                 ]
@@ -1574,14 +1560,7 @@ class VortexBotHandlers:
                 )
             elif data.startswith("admin:setimage:"):
                 which = data.split(":", 2)[2]
-                if which == "duckai":
-                    self.db.set_image_model("duckai")
-                    await query.answer(t("admin.image.set_duckai"))
-                    await query.edit_message_text(
-                        self._build_admin_image_text(),
-                        reply_markup=self._admin_image_keyboard(),
-                    )
-                elif which == "none":
+                if which == "none":
                     self.db.set_image_model("none")
                     await query.answer(t("admin.image.set_off"))
                     await query.edit_message_text(
@@ -1594,24 +1573,6 @@ class VortexBotHandlers:
                         return
                     self.db.set_image_model("custom")
                     await query.answer(t("admin.image.set_custom"))
-                    await query.edit_message_text(
-                        self._build_admin_image_text(),
-                        reply_markup=self._admin_image_keyboard(),
-                    )
-                elif which.startswith("hl:"):
-                    try:
-                        idx = int(which.split(":", 1)[1])
-                    except ValueError:
-                        await query.answer(t("common.invalid_button"))
-                        return
-                    models = self._admin_image_models.get(user.id, [])
-                    if idx < 0 or idx >= len(models):
-                        await query.answer(t("admin.model_gone"))
-                        return
-                    model = models[idx]
-                    self.db.set_image_model(f"hilinkup:{model}")
-                    self._admin_image_models.pop(user.id, None)
-                    await query.answer(t("admin.image.set_model", model=model))
                     await query.edit_message_text(
                         self._build_admin_image_text(),
                         reply_markup=self._admin_image_keyboard(),
@@ -1633,36 +1594,11 @@ class VortexBotHandlers:
                     return
                 self.db.clear_image_provider()
                 if self.db.get_image_model() == "custom":
-                    self.db.set_image_model("duckai")
+                    self.db.set_image_model("none")
                 await query.answer(t("admin.image.removed"))
                 await query.edit_message_text(
                     self._build_admin_image_text(),
                     reply_markup=self._admin_image_keyboard(),
-                )
-            elif data == "admin:imagemodels":
-                hl = self._hilinkup_key()
-                if hl is None:
-                    await query.answer(t("admin.image.no_hilinkup"), show_alert=True)
-                    return
-                base_url, key = hl
-                await query.answer(t("admin.image.fetching"))
-                raw = await TokenPool.list_models(base_url, key)
-                models = [m for m in raw if "image" in m.lower()]
-                if not models:
-                    await query.answer(t("admin.image.no_models"), show_alert=True)
-                    return
-                self._admin_image_models[user.id] = models
-                rows: list[list[InlineKeyboardButton]] = []
-                for i, model in enumerate(models[:15]):
-                    rows.append(
-                        [InlineKeyboardButton(model, callback_data=f"admin:setimage:hl:{i}")]
-                    )
-                rows.append(
-                    [InlineKeyboardButton(t("admin.pickkey.back"), callback_data="admin:image")]
-                )
-                await query.edit_message_text(
-                    t("admin.image.pick_model"),
-                    reply_markup=InlineKeyboardMarkup(rows),
                 )
             elif data == "admin:managers":
                 await query.edit_message_text(
@@ -2731,75 +2667,6 @@ class VortexBotHandlers:
             return
 
         # ==================================================================
-        # 7d. Fast Path: edit an attached / replied-to photo (image editing)
-        #     A photo + an edit instruction ("اینو کارتونی کن") -> the
-        #     photo is edited via DuckAI and the result is sent back.
-        #     Runs after the image-generation path, before file analysis.
-        #     If the instruction matches but no photo is present, ask
-        #     which photo to edit instead of falling through to the LLM.
-        # ==================================================================
-        edit_prompt = extract_image_edit_prompt(text_or_caption)
-        if edit_prompt is not None:
-            edit_photo_id = None
-            if msg.photo:
-                edit_photo_id = msg.photo[-1].file_id
-            elif replied_msg and replied_msg.photo:
-                edit_photo_id = replied_msg.photo[-1].file_id
-            if not edit_photo_id:
-                await msg.reply_text(t("image.edit_ask"))
-                return
-            # Status message while the image is being edited.
-            status_msg = None
-            try:
-                status_msg = await msg.reply_text(t("image.editing"))
-            except Exception:
-                status_msg = None
-            try:
-                await context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.UPLOAD_PHOTO)
-            except Exception:
-                pass
-            image_bytes = None
-            try:
-                tg_file = await context.bot.get_file(edit_photo_id)
-                image_bytes = bytes(await tg_file.download_as_bytearray())
-            except Exception:
-                image_bytes = None
-            if not image_bytes:
-                fail_text = t("image.edit_download_failed")
-                if status_msg is not None:
-                    try:
-                        await status_msg.edit_text(fail_text)
-                    except Exception:
-                        await msg.reply_text(fail_text)
-                else:
-                    await msg.reply_text(fail_text)
-                return
-            edited_bytes, _edit_err = await self.llm_client.edit_image(
-                image_bytes, edit_prompt
-            )
-            if edited_bytes:
-                if status_msg is not None:
-                    try:
-                        await status_msg.delete()
-                    except Exception:
-                        pass
-                sent = await self._reply_photo_with_retry(
-                    msg, edited_bytes, t("image.edit_ready")
-                )
-                if not sent:
-                    await msg.reply_text(t("image.edit_send_failed"))
-            else:
-                fail_text = t("image.edit_failed")
-                if status_msg is not None:
-                    try:
-                        await status_msg.edit_text(fail_text)
-                    except Exception:
-                        await msg.reply_text(fail_text)
-                else:
-                    await msg.reply_text(fail_text)
-            return
-
-        # ==================================================================
         # 8. Detect File Activation:
         #    - Current message has a file whose caption includes 'ورتکس' (or replies to bot)
         #    - OR User replied to a message containing a file with a message containing 'ورتکس'
@@ -3090,7 +2957,6 @@ class VortexBotHandlers:
                 )
         lines.append("")
         lines.append(t("stats.chat_model", model=self.llm_client.describe_active_model()))
-        lines.append(t("stats.image_gen"))
         return "\n".join(lines)
 
     def _build_chat_history_text(self) -> str:

@@ -16,7 +16,7 @@ Ia berjalan pada pelayan anda sendiri, di negara dan bahasa anda sendiri. Anda a
 
 - 💬 **AI chat** dalam kumpulan (kata bangun) dan perbualan persendirian (tidak perlu kata bangun)
 - 🔑 **Token pool** — gunakan beberapa penyedia LLM dan kunci, putar dan gagal alih secara automatik
-- 🖼️ **Penjanaan dan pengeditan imej** — percuma (DuckAI) atau penyedia berbayar
+- 🖼️ **Penjanaan imej** — dengan perkhidmatan imej anda sendiri (URL asas + kunci API + model), ditambah di `/admin`
 - 🔍 **Carian web** — SearXNG hos sendiri, dengan Wikipedia sebagai cadangan
 - 💰 **Harga langsung** — mata wang, emas, minyak, dan kripto dalam mata wang tempatan anda
 - 🕌 **Waktu solat**, 🃏 **ramalan**, 😄 **jenaka**, 🎲 **dadu dan undian syiling**
@@ -145,7 +145,7 @@ Hantar `/admin` dalam perbualan persendirian (hanya boss — tiada sesiapa lain 
 - 👥 **Pengguna** — kiraan pengguna, ban / unban, senarai benar
 - 📊 **Statistik** — angka penggunaan
 - 💬 **Perbualan terkini** — apa yang orang katakan kepada bot (hanya boss, persendirian)
-- 🖼️ **Model imej** — DuckAI (percuma, lalai), HiLinkUp, perkhidmatan imej tersuai, atau ditutup
+- 🖼️ **Model imej** — perkhidmatan imej anda sendiri (URL asas + kunci API + model), atau ditutup
 - 🛡️ **Pengurus** — beri orang dipercayai akses ke bahagian panel
 - 🟢/🔴 **Kuasa** — hidupkan atau matikan bot untuk semua orang (boss kekal kawal)
 - 🌍 **Bahasa & Negara** — tukar bahasa atau negara bot bila-bila masa
@@ -156,7 +156,7 @@ Bot boleh menyimpan kunci dari beberapa penyedia LLM sekaligus. Ia berputar anta
 
 ### Imej
 
-Penjanaan imej mempunyai tiga mod: **DuckAI** (percuma, tiada kunci, lalai), **HiLinkUp** (berbayar, kualiti lebih baik), atau perkhidmatan imej **tersuai** serasi OpenAI milik anda sendiri. Anda juga boleh hantar foto kepada bot dan suruh mengeditnya ("jadikan ini gaya kartun"), dan ia akan menjana imej baharu. Penjanaan imej boleh dimatikan dari `/admin`.
+Penjanaan imej menggunakan perkhidmatan imej serasi OpenAI milik anda sendiri: tambah URL asas, kunci API dan model di `/admin` (🖼️ Model imej). Tiada penyedia imej binaan dalaman, dan pengeditan foto tidak disokong. Penjanaan imej boleh dimatikan dari `/admin`.
 
 ### Negara dan bahasa
 

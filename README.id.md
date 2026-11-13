@@ -16,7 +16,7 @@ Ini berjalan di server Anda sendiri, di negara dan bahasa Anda sendiri. Anda ada
 
 - 💬 **AI chat** di grup (kata pemicu) dan obrolan pribadi (tidak perlu kata pemicu)
 - 🔑 **Token pool** — gunakan beberapa penyedia dan kunci LLM, putar dan failover otomatis
-- 🖼️ **Image generation and editing** — gratis (DuckAI) atau penyedia berbayar
+- 🖼️ **Image generation** — dengan layanan gambar Anda sendiri (URL dasar + kunci API + model), ditambahkan di `/admin`
 - 🔍 **Web search** — SearXNG self-hosted, dengan cadangan Wikipedia
 - 💰 **Live prices** — mata uang, emas, minyak, dan kripto dalam mata uang lokal Anda
 - 🕌 **Jadwal sholat**, 🃏 **ramalan**, 😄 **lelucon**, 🎲 **dadu dan lempar koin**
@@ -145,7 +145,7 @@ Kirim `/admin` di obrolan pribadi (hanya boss — orang lain tidak bisa buka, da
 - 👥 **Pengguna** — jumlah pengguna, ban / unban, daftar izin
 - 📊 **Statistik** — angka penggunaan
 - 💬 **Obrolan terbaru** — apa yang orang katakan ke bot (hanya boss, pribadi)
-- 🖼️ **Model gambar** — DuckAI (gratis, default), HiLinkUp, layanan gambar kustom, atau mati
+- 🖼️ **Model gambar** — layanan gambar Anda sendiri (URL dasar + kunci API + model), atau mati
 - 🛡️ **Manajer** — beri orang tepercaya akses ke bagian panel
 - 🟢/🔴 **Daya** — nyalakan atau matikan bot untuk semua orang (boss tetap kontrol)
 - 🌍 **Bahasa & Negara** — ubah bahasa atau negara bot kapan saja
@@ -156,7 +156,7 @@ Bot bisa menyimpan kunci dari beberapa penyedia LLM sekaligus. Ia berputar antar
 
 ### Gambar
 
-Pembuatan gambar punya tiga mode: **DuckAI** (gratis, tanpa kunci, default), **HiLinkUp** (berbayar, kualitas lebih baik), atau layanan gambar **kustom** kompatibel OpenAI milik Anda sendiri. Anda juga bisa kirim foto ke bot dan suruh diedit ("buat gaya kartun"), dan bot akan buat gambar baru. Pembuatan gambar bisa dimatikan dari `/admin`.
+Pembuatan gambar menggunakan layanan gambar OpenAI-kompatibel milik Anda sendiri: tambahkan URL dasar, kunci API, dan model di `/admin` (🖼️ Model gambar). Tidak ada penyedia gambar bawaan, dan pengeditan foto tidak didukung. Pembuatan gambar dapat dimatikan dari `/admin`.
 
 ### Negara dan bahasa
 

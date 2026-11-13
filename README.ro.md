@@ -16,7 +16,7 @@ Rulează pe propriul tău server, în propria ta țară și limbă. Ești șeful
 
 - 💬 **Chat AI** în grupuri (cuvânt de declanșare) și conversații private (fără cuvânt de declanșare necesar)
 - 🔑 **Grup de tokenuri** — folosește mai mulți furnizori LLM și chei, rotește și comută automat la rezervă
-- 🖼️ **Generare și editare imagini** — gratuite (DuckAI) sau furnizori plătiți
+- 🖼️ **Generare imagini** — cu propriul serviciu de imagini (URL de bază + cheie API + model), adăugat în `/admin`
 - 🔍 **Căutare pe web** — SearXNG auto-gazduit, cu rezervă Wikipedia
 - 💰 **Prețuri live** — valute, aur, petrol și crypto în moneda ta locală
 - 🕌 **Ore de rugăciune**, 🃏 **norocuri**, 😄 **glume**, 🎲 **zaruri și aruncări de monetă**
@@ -145,7 +145,7 @@ Trimiteți `/admin` într-un chat privat (doar bossul — nimeni altul nu-l poat
 - 👥 **Utilizatori** — numărul utilizatorilor, ban / unban, listă de permitere
 - 📊 **Statistici** — numere de utilizare
 - 💬 **Chat-uri recente** — ce au spus oamenii botului (doar bossul, privat)
-- 🖼️ **Model imagine** — DuckAI (gratuit, implicit), HiLinkUp, un serviciu personalizat de imagini, sau oprit
+- 🖼️ **Model imagine** — propriul serviciu de imagini (URL de bază + cheie API + model), sau oprit
 - 🛡️ **Manageri** — dați persoanelor de încredere acces la părți din panou
 - 🟢/🔴 **Putere** — porniți sau opriți botul pentru toți (bossul rămâne în control)
 - 🌍 **Limba & Țara** — schimbați limba sau țara botului oricând
@@ -156,7 +156,7 @@ Botul poate ține chei de la mai mulți furnizori LLM odată. Rotește între ch
 
 ### Imagini
 
-Generarea de imagini are trei moduri: **DuckAI** (gratuit, fără cheie, implicit), **HiLinkUp** (plătit, calitate mai bună), sau un serviciu **personalizat** de imagini compatibil OpenAI al dvs. Puteți trimite botului o fotografie și să-i spuneți cum să o editeze ("faceți acest lucru în stil cartoon"), și va genera o imagine nouă. Generarea de imagini poate fi dezactivată din `/admin`.
+Generarea de imagini folosește propriul serviciu de imagini compatibil OpenAI: adăugați URL-ul de bază, cheia API și modelul în `/admin` (🖼️ Image model). Nu există un furnizor de imagini integrat, și editarea fotografiilor nu este acceptată. Generarea de imagini poate fi dezactivată din `/admin`.
 
 ### Țări și limbi
 

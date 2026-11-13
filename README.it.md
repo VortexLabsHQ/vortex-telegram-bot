@@ -16,7 +16,7 @@ Gira sul tuo server, nel tuo paese e nella tua lingua. Sei tu il capo: un pannel
 
 - 💬 **Chat AI** nei gruppi (parola di attivazione) e chat private (nessuna parola di attivazione necessaria)
 - 🔑 **Pool di token** — usa diversi provider LLM e chiavi, ruota e fa failover automaticamente
-- 🖼️ **Generazione e modifica immagini** — gratis (DuckAI) o provider a pagamento
+- 🖼️ **Generazione immagini** — con il tuo servizio immagini (URL base + chiave API + modello), aggiunto in `/admin`
 - 🔍 **Ricerca web** — SearXNG self-hosted, con fallback a Wikipedia
 - 💰 **Prezzi in tempo reale** — valute, oro, petrolio e crypto nella tua valuta locale
 - 🕌 **Orari di preghiera**, 🃏 **fortune**, 😄 **barzellette**, 🎲 **dadi e lancio moneta**
@@ -145,7 +145,7 @@ Manda `/admin` in chat privata (solo il capo — nessun altro può aprirlo, e no
 - 👥 **Utenti** — contatori utenti, ban / unban, allowlist
 - 📊 **Statistiche** — numeri di utilizzo
 - 💬 **Chat recenti** — cosa ha detto la gente al bot (solo il capo, privato)
-- 🖼️ **Modello immagine** — DuckAI (gratis, default), HiLinkUp, un servizio immagini custom, o spento
+- 🖼️ **Modello immagine** — il tuo servizio immagini (URL base + chiave API + modello), o spento
 - 🛡️ **Manager** — dai a persone fidate l'accesso a parti del pannello
 - 🟢/🔴 **Accensione** — accendi o spegni il bot per tutti (il capo resta al comando)
 - 🌍 **Lingua e Paese** — cambia la lingua o il paese del bot quando vuoi
@@ -156,7 +156,7 @@ Il bot può tenere chiavi di diversi provider LLM insieme. Ruota tra le chiavi s
 
 ### Immagini
 
-La generazione immagini ha tre modalità: **DuckAI** (gratis, niente chiave, default), **HiLinkUp** (a pagamento, qualità migliore), o un servizio immagini **custom** compatibile OpenAI tuo. Puoi anche mandare al bot una foto e dirgli come modificarla ("fai stile cartone"), e genera una nuova immagine. La generazione immagini si può spegnere da `/admin`.
+La generazione immagini usa il tuo servizio immagini compatibile OpenAI: aggiungi il suo URL base, chiave API e modello in `/admin` (🖼️ Modello immagine). Non c'è un provider immagini integrato, e la modifica foto non è supportata. La generazione immagini può essere disattivata da `/admin`.
 
 ### Paesi e lingue
 

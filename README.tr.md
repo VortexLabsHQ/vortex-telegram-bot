@@ -16,7 +16,7 @@ Kendi sunucunuzda, kendi ülkenizde ve dilinizde çalışır. Siz patronusunuz: 
 
 - 💬 **AI sohbeti** gruplarda (uyanma kelimesiyle) ve özel sohbetlerde (uyanma kelimesi gerekmez)
 - 🔑 **Token havuzu** — birkaç LLM sağlayıcısı ve anahtarı kullanın, otomatik olarak değiştirin ve hata durumunda yedek devreye girsin
-- 🖼️ **Resim oluşturma ve düzenleme** — ücretsiz (DuckAI) veya ücretli sağlayıcılar
+- 🖼️ **Resim oluşturma** — kendi resim servisinizle (temel URL + API anahtarı + model), `/admin` ekranından eklendi
 - 🔍 **Web araması** — kendi barındırdığınız SearXNG, Vikipedi yedeğiyle
 - 💰 **Canlı fiyatlar** — para birimleri, altın, petrol ve kripto paralar yerel para biriminizde
 - 🕌 **Ezan vakitleri**, 🃏 **fal**, 😄 **şakalar**, 🎲 **zar ve yazı-tura**
@@ -145,7 +145,7 @@ Not: otomatik kendi kendini güncelleyici systemd servisine ihtiyaç duyar, bu y
 - 👥 **Kullanıcılar** — kullanıcı sayıları, yasakla/yasak kaldır, izin listesi
 - 📊 **İstatistikler** — kullanım sayıları
 - 💬 **Son sohbetler** — insanlar bota ne yazdı (sadece patron, özel)
-- 🖼️ **Resim modeli** — DuckAI (ücretsiz, varsayılan), HiLinkUp, özel bir resim servisi, veya kapalı
+- 🖼️ **Resim modeli** — kendi resim servisiniz (temel URL + API anahtarı + model) veya kapalı
 - 🛡️ **Yöneticiler** — güvenilen kişilere panelin kısımlarına erişim verin
 - 🟢/🔴 **Güç** — botu herkes için açın/kapatın (patron her zaman kontrol eder)
 - 🌍 **Dil ve Ülke** — botun dilini veya ülkesini istediğiniz zaman değiştirin
@@ -156,7 +156,7 @@ Bot aynı anda birkaç LLM sağlayıcısından anahtar tutabilir. Sağlıklı an
 
 ### Resimler
 
-Resim oluşturma üç modda: **DuckAI** (ücretsiz, anahtar gerekmez, varsayılan), **HiLinkUp** (ücretli, daha iyi kalite), veya kendi **özel** OpenAI-uyumlu resim servisiniz. Bot'a fotoğraf da gönderebilir ve nasıl düzenlemesini söyleyebilirsiniz ("bunu çizgi film yap"), ve yeni bir resim oluşturur. Resim oluşturma `/admin` panelinden kapatılabilir.
+Resim oluşturma, kendi OpenAI-uyumlu resim servisinizi kullanır: temel URL, API anahtarı ve modeli `/admin` (🖼️ **Resim modeli**) bölümüne ekleyin. Yerleşik bir resim sağlayıcı yoktur ve fotoğraf düzenleme desteklenmemektedir. Resim oluşturma `/admin` panelinden kapatılabilir.
 
 ### Ülkeler ve diller
 

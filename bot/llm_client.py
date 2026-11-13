@@ -134,8 +134,8 @@ def _is_empty_response(resp: Any) -> bool:
 
 
 def get_image_tool_schema() -> dict[str, Any]:
-    """OpenAI-compatible tool definition for image generation (DuckAI,
-    free, via the local DuckAiChat app). The model calls this when the
+    """OpenAI-compatible tool definition for image generation (via the
+    owner-configured image service). The model calls this when the
     user asks for a picture in natural conversation; the generated image
     is sent to the chat as a photo."""
     return {
@@ -158,41 +158,6 @@ def get_image_tool_schema() -> dict[str, Any]:
                     "caption": {
                         "type": "string",
                         "description": "کپشن کوتاه برای تصویر (اختیاری)",
-                    },
-                },
-                "required": ["prompt"],
-            },
-        },
-    }
-
-
-def get_image_edit_tool_schema() -> dict[str, Any]:
-    """OpenAI-compatible tool definition for image EDITING (DuckAI,
-    free, via the local DuckAiChat app). The model calls this when the
-    user sent a photo in this turn and asks to change it (e.g. make it
-    cartoon, black-and-white, add/remove something). The input image is
-    the photo from this turn; the edited image is sent to the chat."""
-    return {
-        "type": "function",
-        "function": {
-            "name": "edit_image",
-            "description": (
-                "ویرایش عکسی که کاربر همین الان فرستاده است. وقتی کاربر عکس "
-                "می‌فرستد و می‌خواد تغییرش بده (مثلاً «اینو کارتونی کن»، "
-                "«سیاه سفیدش کن»، «پس‌زمینه رو عوض کن»)، این ابزار رو با "
-                "توضیح تغییر صدا بزن. تصویر ویرایش‌شده مستقیم برای کاربر "
-                "ارسال می‌شود. اگر کاربر عکسی نفرستاده، این ابزار کار نمی‌کند."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "prompt": {
-                        "type": "string",
-                        "description": "توضیح تغییر موردنظر به فارسی یا انگلیسی (مثلاً «کارتونی کن»)",
-                    },
-                    "caption": {
-                        "type": "string",
-                        "description": "کپشن کوتاه برای تصویر ویرایش‌شده (اختیاری)",
                     },
                 },
                 "required": ["prompt"],
@@ -275,7 +240,6 @@ class LLMClient:
                 *(e.key for e in settings.llm_providers),
                 *settings.llm_api_keys,
                 settings.search_api_key,
-                settings.hilinkup_api_key,
             )
             if s
         ]
@@ -464,122 +428,17 @@ class LLMClient:
             return resp
         raise last_exc if last_exc is not None else RuntimeError("LLM call failed")
 
-    async def _duckai_draw(
-        self,
-        prompt: str,
-        images: list[dict[str, str]] | None = None,
-    ) -> tuple[bytes | None, str | None]:
-        """Generate (or edit, when `images` is given) an image via the
-        local DuckAiChat app (duck.ai /draw, free, no key). POSTs to the
-        Next.js API on this server and reads the NDJSON stream for the
-        {kind:'image', value:{b64,...}} event.
-        `images` is a list of {type:'image', mimeType, image:data-url}
-        parts (the DuckAiChat endpoint normalizes them to WebP).
-        Returns (image_bytes, None) on success or (None, error_code) on
-        failure; never raises. Error codes: 'empty' (no image event),
-        'failed' (any request/stream error)."""
-        url = "http://127.0.0.1:8897/chat/api/duckchat"
-        payload: dict[str, Any] = {
-            "prompt": prompt,
-            "model": "gpt-6-luna",
-            "draw": True,
-            "imageQuality": "1K",
-            "imageAspectRatio": "1:1",
-        }
-        if images:
-            payload["images"] = images
-        try:
-            async with httpx.AsyncClient(timeout=180.0) as client:
-                async with client.stream(
-                    "POST",
-                    url,
-                    json=payload,
-                    headers={"Content-Type": "application/json"},
-                ) as resp:
-                    if resp.status_code != 200:
-                        return None, "failed"
-                    b64 = ""
-                    async for line in resp.aiter_lines():
-                        line = line.strip()
-                        if not line:
-                            continue
-                        try:
-                            ev = json.loads(line)
-                        except json.JSONDecodeError:
-                            continue
-                        if ev.get("kind") == "image":
-                            b64 = (ev.get("value") or {}).get("b64") or ""
-                            if b64:
-                                break
-                        elif ev.get("kind") == "error":
-                            return None, "failed"
-                    if not b64:
-                        return None, "empty"
-                    return base64.b64decode(b64), None
-        except Exception as exc:
-            logger.warning("DuckAI image draw failed: %s", type(exc).__name__)
-            return None, "failed"
-
-    async def generate_image_duckai(self, prompt: str) -> tuple[bytes | None, str | None]:
-        """Generate an image via the local DuckAiChat app (duck.ai /draw,
-        free, no key). Thin wrapper over _duckai_draw (no input image)."""
-        return await self._duckai_draw(prompt)
-
-    async def edit_image_duckai(
-        self, image_bytes: bytes, prompt: str
-    ) -> tuple[bytes | None, str | None]:
-        """Edit an image via the local DuckAiChat app (duck.ai /draw with
-        an input image, free, no key). The image is downscaled to max
-        1024px and JPEG-encoded (q85) before upload to keep the payload
-        small; the endpoint normalizes it to WebP. Returns
-        (edited_bytes, None) or (None, error_code); never raises."""
-        try:
-            data_url = await asyncio.to_thread(
-                self._prepare_edit_image_data_url, image_bytes
-            )
-        except Exception as exc:
-            logger.warning("Image edit: could not prepare input image: %s", type(exc).__name__)
-            return None, "failed"
-        return await self._duckai_draw(
-            prompt,
-            images=[{"type": "image", "mimeType": "image/jpeg", "image": data_url}],
-        )
-
-    @staticmethod
-    def _prepare_edit_image_data_url(image_bytes: bytes) -> str:
-        """Downscale + JPEG-encode an input photo. Blocking PIL work, run
-        in a thread so a large image never stalls the event loop."""
-        from PIL import Image
-
-        Image.MAX_IMAGE_PIXELS = 50_000_000
-        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        img.thumbnail((1024, 1024))
-        buf = io.BytesIO()
-        img.save(buf, format="JPEG", quality=85)
-        return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
-
-    async def edit_image(
-        self, image_bytes: bytes, prompt: str
-    ) -> tuple[bytes | None, str | None]:
-        """Edit an image. DuckAI (free, via the local DuckAiChat app) is
-        the backend. Returns (edited_bytes, None) on success or
-        (None, error_code) on failure; never raises.
-        Error codes: 'empty' (no image in the response), 'failed'."""
-        return await self.edit_image_duckai(image_bytes, prompt)
-
-    async def _generate_image_hilinkup(
-        self, prompt: str, model: str, base_url: str | None = None, key: str | None = None
+    async def _generate_image_provider(
+        self, prompt: str, model: str, base_url: str, key: str
     ) -> tuple[bytes | None, str | None]:
         """Generate an image via an OpenAI-compatible /images/generations
-        endpoint with `model`. Defaults to the configured HiLinkUp
-        base URL + key; a custom provider passes its own. Returns
-        (image_bytes, None) on success or (None, error_code) on failure;
-        never raises. Error codes: 'not_configured' (no key),
-        'empty', 'failed'."""
-        key = key if key is not None else self.settings.hilinkup_api_key
+        endpoint with `model`, `base_url` and `key` (the owner-configured
+        image service). Returns (image_bytes, None) on success or
+        (None, error_code) on failure; never raises. Error codes:
+        'not_configured' (no key), 'empty', 'failed'."""
         if not key:
             return None, "not_configured"
-        base = (base_url or self.settings.hilinkup_base_url or "https://api.hilinkup.com/v1").rstrip("/")
+        base = base_url.rstrip("/")
         try:
             async with httpx.AsyncClient(timeout=180.0) as client:
                 resp = await client.post(
@@ -648,61 +507,42 @@ class LLMClient:
             return None
 
     async def generate_image(self, prompt: str) -> tuple[bytes | None, str | None]:
-        """Generate an image, honoring the boss's image-model choice
+        """Generate an image with the owner-configured image service
         (bot_settings 'image_model', set from /admin):
-        - 'duckai' (default): DuckAI (free, via the local DuckAiChat app)
-          first; HiLinkUp (settings.hilinkup_image_model) as fallback.
-        - 'hilinkup:<model>': that HiLinkUp image model first, DuckAI
-          as fallback.
-        - 'custom': the custom provider (bot_settings 'image_provider')
-          first, DuckAI as fallback.
-        - 'none': image generation disabled.
+        - 'custom': the image provider the owner added (bot_settings
+          'image_provider': base URL + API key + model).
+        - 'none': image generation disabled (default; no provider is
+          built in — the owner adds one in /admin).
         Returns (image_bytes, None) on success or (None, error_code) on
         failure; never raises.
         Error codes: 'disabled' (image gen turned off), 'not_configured'
-        (no backend available), 'empty' (no image in the response),
+        (no provider configured), 'empty' (no image in the response),
         'failed' (any request/download error)."""
-        choice = "duckai"
+        choice = "none"
         try:
-            choice = self.db.get_image_model() or "duckai"
+            choice = self.db.get_image_model() or "none"
         except Exception:
             pass
         if choice == "none":
             return None, "disabled"
-        if choice.startswith("hilinkup:"):
-            model = choice[len("hilinkup:"):].strip() or "qwen-image-3.0"
-            hl_bytes, _hl_err = await self._generate_image_hilinkup(prompt, model)
-            if hl_bytes:
-                return hl_bytes, None
-            duck_bytes, _duck_err = await self.generate_image_duckai(prompt)
-            if duck_bytes:
-                return duck_bytes, None
-            return None, "failed"
         if choice == "custom":
             provider = None
             try:
                 provider = self.db.get_image_provider()
             except Exception:
                 pass
-            if provider is not None:
-                c_base, c_key, c_model = provider
-                c_bytes, _c_err = await self._generate_image_hilinkup(
-                    prompt, c_model, base_url=c_base, key=c_key
+            if provider is None:
+                logger.warning(
+                    "Image choice is 'custom' but no provider is stored."
                 )
-                if c_bytes:
-                    return c_bytes, None
-                duck_bytes, _duck_err = await self.generate_image_duckai(prompt)
-                if duck_bytes:
-                    return duck_bytes, None
-                return None, "failed"
-            # Custom chosen but the provider data is gone: fall through
-            # to the default DuckAI path (and log, so it is visible).
-            logger.warning("Image choice is 'custom' but no provider is stored; using DuckAI.")
-        duck_bytes, _duck_err = await self.generate_image_duckai(prompt)
-        if duck_bytes:
-            return duck_bytes, None
-        model = self.settings.hilinkup_image_model or "qwen-image-3.0"
-        return await self._generate_image_hilinkup(prompt, model)
+                return None, "not_configured"
+            c_base, c_key, c_model = provider
+            return await self._generate_image_provider(
+                prompt, c_model, c_base, c_key
+            )
+        # Unknown / legacy choice: treat as disabled, never fall back.
+        logger.warning("Unknown image choice %r; image generation disabled.", choice)
+        return None, "disabled"
 
     @staticmethod
     def _load_system_prompt(path: Path) -> str:
@@ -718,7 +558,6 @@ class LLMClient:
         tools = get_web_tool_schemas()
         tools.append(get_file_creation_tool_schema())
         tools.append(get_image_tool_schema())
-        tools.append(get_image_edit_tool_schema())
         tools.append(get_download_tool_schema())
         return tools
 
@@ -726,16 +565,13 @@ class LLMClient:
         self,
         fn_name: str,
         args: dict[str, Any],
-        tool_input_image: bytes | None = None,
     ) -> tuple[str, GeneratedFileSpec | GeneratedImageSpec | GeneratedDownloadSpec | None]:
         """Execute one tool call (web_search / fetch_webpage / create_file /
-        create_image / edit_image / download_file). Returns
+        create_image / download_file). Returns
         (tool_result_str, spec_or_None) — a GeneratedFileSpec for
-        create_file, a GeneratedImageSpec for create_image/edit_image, a
+        create_file, a GeneratedImageSpec for create_image, a
         GeneratedDownloadSpec for download_file, None otherwise. Shared
-        by native and text tool-call paths. `tool_input_image` is the
-        photo from the current turn (decoded bytes) and is used only by
-        edit_image; None when the user sent no photo in this turn."""
+        by native and text tool-call paths."""
         if fn_name == "web_search":
             query = str(args.get("query", ""))
             return await self.web_toolkit.web_search(query), None
@@ -778,23 +614,6 @@ class LLMClient:
             if err == "not_configured":
                 return t("llm.image_not_configured"), None
             return t("llm.image_failed"), None
-        if fn_name == "edit_image":
-            prompt = str(args.get("prompt", "")).strip()
-            caption = str(args.get("caption", "")).strip() or t("llm.edit_caption")
-            caption = sanitize_llm_output(
-                caption, self._secrets_to_redact, allowed_models=()
-            )
-            if not prompt:
-                return t("llm.edit_empty_prompt"), None
-            if tool_input_image is None:
-                return t("llm.edit_no_photo"), None
-            image_bytes, err = await self.edit_image(tool_input_image, prompt)
-            if image_bytes:
-                spec = GeneratedImageSpec(image_bytes=image_bytes, caption=caption)
-                return t("llm.edit_success"), spec
-            if err == "not_configured":
-                return t("llm.edit_not_configured"), None
-            return t("llm.edit_failed"), None
         if fn_name == "download_file":
             url = str(args.get("url", "")).strip()
             if not url:
@@ -952,16 +771,6 @@ class LLMClient:
         # Names the user did NOT mention are still replaced with "ورتکس".
         allowed_models = extract_mentioned_models(user_text)
 
-        # Decode the photo from this turn (if any) so the edit_image tool
-        # can use it. Kept as a local (per-call) value, not instance state,
-        # so concurrent chats cannot mix up each other's photos.
-        tool_input_image: bytes | None = None
-        if ephemeral_image_b64:
-            try:
-                tool_input_image = base64.b64decode(ephemeral_image_b64)
-            except Exception:
-                tool_input_image = None
-
         role_tag = "[SENDER_ROLE: VERIFIED_BOSS]" if is_boss else "[SENDER_ROLE: REGULAR_USER]"
         # sender_name is user-controlled (Telegram display name): strip
         # anything that could inject into the system-role message (brackets,
@@ -1090,16 +899,14 @@ class LLMClient:
                 return "به سقف استفاده از ابزار در این پیام رسیدی.", None
             if fn_name == "download_file" and tool_budget["downloads"] >= 2:
                 return "به سقف دانلود در این پیام رسیدی (حداکثر ۲ فایل).", None
-            if fn_name in ("create_image", "edit_image") and tool_budget["images"] >= 2:
+            if fn_name == "create_image" and tool_budget["images"] >= 2:
                 return "به سقف ساخت تصویر در این پیام رسیدی (حداکثر ۲ تصویر).", None
             tool_budget["total"] += 1
             if fn_name == "download_file":
                 tool_budget["downloads"] += 1
-            if fn_name in ("create_image", "edit_image"):
+            if fn_name == "create_image":
                 tool_budget["images"] += 1
-            return await self._run_tool(
-                fn_name, args, tool_input_image=tool_input_image
-            )
+            return await self._run_tool(fn_name, args)
 
         try:
             await _emit("[>] processing request")

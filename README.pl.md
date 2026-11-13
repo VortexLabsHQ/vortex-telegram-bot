@@ -16,7 +16,7 @@ Działa na Twoim własnym serwerze, w Twoim własnym kraju i języku. Ty jesteś
 
 - 💬 **Czat AI** w grupach (słowo budzące) i czatach prywatnych (bez słowa budzącego)
 - 🔑 **Pula tokenów** — używaj kilku dostawców LLM i kluczy, automatycznie rotuj i przełączaj w razie awarii
-- 🖼️ **Generowanie i edycja obrazów** — darmowe (DuckAI) lub płatne dostawcy
+- 🖼️ **Generowanie obrazów** — z własną usługą obrazów (adres bazowy + klucz API + model), dodaną w `/admin`
 - 🔍 **Wyszukiwanie w sieci** — samodzielnie hostowane SearXNG, z rezerwą Wikipedia
 - 💰 **Ceny na żywo** — waluty, złoto, ropa i krypto w Twojej walucie lokalnej
 - 🕌 **Czasy modlitw**, 🃏 **przepowiednie**, 😄 **kawałki**, 🎲 **rzuty kostką i monetą**
@@ -145,7 +145,7 @@ Wyślij `/admin` na czacie prywatnym (tylko dla szefa — nikt inny nie może go
 - 👥 **Użytkownicy** — liczba użytkowników, ban/odbanuj, lista dozwolonych
 - 📊 **Statystyki** — dane o użyciu
 - 💬 **Ostatnie czaty** — co ludzie napisali do bota (tylko szef, prywatnie)
-- 🖼️ **Model obrazów** — DuckAI (darmowy, domyślny), HiLinkUp, własna usługa obrazów, lub wyłączony
+- 🖼️ **Model obrazów** — własna usługa obrazów (adres bazowy + klucz API + model) lub wyłączony
 - 🛡️ **Menedżerowie** — daj zaufanym osobom dostęp do części panelu
 - 🟢/🔴 **Zasilanie** — włącz lub wyłącz bota dla wszystkich (szef zachowuje kontrolę)
 - 🌍 **Język i kraj** — zmień język lub kraj bota w dowolnym momencie
@@ -156,7 +156,7 @@ Bot może przechowywać klucze od kilku dostawców LLM naraz. Przełącza się m
 
 ### Obrazy
 
-Generowanie obrazów ma trzy tryby: **DuckAI** (darmowy, bez klucza, domyślny), **HiLinkUp** (płatny, lepsza jakość), lub **własna** usługa obrazów kompatybilna z OpenAI. Możesz też wysłać botowi zdjęcie i powiedzieć, jak je edytować („zrób to w stylu kreskówki”), a on wygeneruje nowy obraz. Generowanie obrazów można wyłączyć z `/admin`.
+Generowanie obrazów korzysta z Twojej własnej usługi obrazów kompatybilnej z OpenAI: dodaj jej adres bazowy, klucz API i model w `/admin` (🖼️ Model obrazów). Nie ma wbudowanego dostawcy obrazów, a edycja zdjęć nie jest obsługiwana. Generowanie obrazów można wyłączyć z `/admin`.
 
 ### Kraje i języki
 

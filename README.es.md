@@ -16,7 +16,7 @@ Se ejecuta en tu propio servidor, en tu propio país e idioma. Tú eres el jefe:
 
 - 💬 **Chat con IA** en grupos (palabra de activación) y chats privados (no se necesita palabra de activación)
 - 🔑 **Conjunto de tokens** — usa varios proveedores y claves de LLM, rota y cambia automáticamente si falla uno
-- 🖼️ **Generación y edición de imágenes** — gratis (DuckAI) o proveedores de pago
+- 🖼️ **Generación de imágenes** — con tu propio servicio de imagen (URL base + clave API + modelo), añadido en `/admin`
 - 🔍 **Búsqueda web** — SearXNG autoalojado, con respaldo de Wikipedia
 - 💰 **Precios en vivo** — divisas, oro, petróleo y cripto en tu moneda local
 - 🕌 **Horarios de oración**, 🃏 **frases de la fortuna**, 😄 **chistes**, 🎲 **dados y cara o cruz**
@@ -145,7 +145,7 @@ Envía `/admin` en un chat privado (solo el jefe — nadie más puede abrirlo, y
 - 👥 **Usuarios** — conteo de usuarios, banear / desbanear, lista de permitidos
 - 📊 **Estadísticas** — números de uso
 - 💬 **Chats recientes** — lo que la gente le dijo al bot (solo el jefe, privado)
-- 🖼️ **Modelo de imagen** — DuckAI (gratis, predeterminado), HiLinkUp, un servicio de imagen personalizado, o apagado
+- 🖼️ **Modelo de imagen** — tu propio servicio de imagen (URL base + clave API + modelo), o apagado
 - 🛡️ **Gestores** — da a gente de confianza acceso a partes del panel
 - 🟢/🔴 **Encendido** — enciende o apaga el bot para todos (el jefe sigue teniendo el control)
 - 🌍 **Idioma y País** — cambia el idioma o el país del bot cuando quieras
@@ -156,7 +156,7 @@ El bot puede guardar claves de varios proveedores LLM a la vez. Rota entre las c
 
 ### Imágenes
 
-La generación de imágenes tiene tres modos: **DuckAI** (gratis, sin clave, predeterminado), **HiLinkUp** (pago, mejor calidad), o un servicio de imagen **personalizado** compatible con OpenAI. También puedes enviarle una foto al bot y decirle cómo editarla ("haz esto estilo cartoon"), y generará una imagen nueva. La generación de imágenes se puede desactivar desde `/admin`.
+La generación de imágenes usa tu propio servicio de imagen compatible con OpenAI: añade su URL base, clave API y modelo en `/admin` (🖼️ Modelo de imagen). No hay proveedor de imágenes integrado, y la edición de fotos no es compatible. La generación de imágenes se puede desactivar desde `/admin`.
 
 ### Países e idiomas
 

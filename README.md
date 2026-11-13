@@ -16,7 +16,7 @@ It runs on your own server, in your own country and language. You are the boss: 
 
 - 💬 **AI chat** in groups (wake word) and private chats (no wake word needed)
 - 🔑 **Token pool** — use several LLM providers and keys, rotate and fail over automatically
-- 🖼️ **Image generation and editing** — free (DuckAI) or paid providers
+- 🖼️ **Image generation** — with your own image service (base URL + API key + model), added in `/admin`
 - 🔍 **Web search** — self-hosted SearXNG, with Wikipedia fallback
 - 💰 **Live prices** — currencies, gold, oil, and crypto in your local currency
 - 🕌 **Prayer times**, 🃏 **fortunes**, 😄 **jokes**, 🎲 **dice and coin flips**
@@ -145,7 +145,7 @@ Send `/admin` in a private chat (boss only — nobody else can open it, and it n
 - 👥 **Users** — user counts, ban / unban, allowlist
 - 📊 **Stats** — usage numbers
 - 💬 **Recent chats** — what people said to the bot (boss only, private)
-- 🖼️ **Image model** — DuckAI (free, default), HiLinkUp, a custom image service, or off
+- 🖼️ **Image model** — your own image service (base URL + API key + model), or off
 - 🛡️ **Managers** — give trusted people access to parts of the panel
 - 🟢/🔴 **Power** — turn the bot on or off for everyone (boss stays in control)
 - 🌍 **Language & Country** — change the bot's language or country any time
@@ -156,7 +156,7 @@ The bot can hold keys from several LLM providers at once. It rotates between hea
 
 ### Images
 
-Image generation has three modes: **DuckAI** (free, no key, default), **HiLinkUp** (paid, better quality), or a **custom** OpenAI-compatible image service of your own. You can also send the bot a photo and tell it how to edit it ("make this cartoon style"), and it will generate a new image. Image generation can be turned off from `/admin`.
+Image generation uses your own OpenAI-compatible image service: add its base URL, API key and model in `/admin` (🖼️ Image model). There is no built-in image provider, and photo editing is not supported. Image generation can be turned off from `/admin`.
 
 ### Countries and languages
 

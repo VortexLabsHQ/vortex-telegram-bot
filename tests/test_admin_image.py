@@ -6,8 +6,8 @@ Covers:
   - DB: image_provider get/set/clear, malformed -> None, db file 0600
   - LLMClient.probe_image (stubbed httpx: b64 ok, url ok, non-200/empty/
     exception -> None)
-  - LLMClient.generate_image with choice 'custom' (custom first, DuckAI
-    fallback) and 'custom' with no provider (falls back to DuckAI)
+  - LLMClient.generate_image with choice 'custom' (provider used) and
+    'custom' with no provider (not_configured, no fallback)
   - Handlers: addimage flow (base_url -> model -> key, live probe,
     key message deleted, provider saved, choice custom, test photo sent),
     invalid base/model/key rejected, 'لغو' cancels, setimage:custom,
@@ -159,30 +159,21 @@ async def test_custom_choice():
     settings = SimpleNamespace(
         llm_providers=[token_pool.ProviderEntry(base_url=NV, key="nvapi-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", model="m")],
         token_dead_path=None, llm_pinned_model="", llm_manual_selection="",
-        hilinkup_api_key="hlk_test", hilinkup_base_url=HL,
-        hilinkup_image_model="qwen-image-3.0",
         system_prompt_path=Path(tempfile.mkdtemp()) / "system_prompt.txt",
         bot_token="bot-token-test", llm_api_keys=[], search_api_key="",
         groq_api_key="", agy_enabled=False,
     )
     client = llm_client_mod.LLMClient(settings, db3, SimpleNamespace(), workspace_root=Path(tempfile.mkdtemp()))
-    duck_called = {"n": 0}
-
-    async def fake_duckai(prompt):
-        duck_called["n"] += 1
-        return b"duck-image", None
-
-    client.generate_image_duckai = fake_duckai
     _httpx.AsyncClient = lambda timeout=None: FakeImgClient(
         post_resp=FakeResp(200, {"data": [{"b64_json": base64.b64encode(b"custom-img").decode()}]}))
     db3.set_image_provider("https://img.example/v1", "sk-custom-key", "img-model-1")
     db3.set_image_model("custom")
     out, err = await client.generate_image("a cat")
-    check("custom provider used first", out == b"custom-img" and err is None and duck_called["n"] == 0)
-    # custom chosen but no provider -> falls back to DuckAI
+    check("custom provider used", out == b"custom-img" and err is None)
+    # custom chosen but no provider -> not_configured, no fallback
     db3.clear_image_provider()
     out, err = await client.generate_image("a cat")
-    check("custom without provider falls back to DuckAI", out == b"duck-image" and duck_called["n"] == 1)
+    check("custom without provider -> not_configured", (out, err) == (None, "not_configured"))
     _httpx.AsyncClient = _real_client
 
 
@@ -357,14 +348,14 @@ async def run_flows():
     check("لغو cancels addimage", BOSS not in h._admin_pending)
 
     # --- select custom / remove custom ---
-    db2.set_image_model("duckai")
+    db2.set_image_model("none")
     q = FakeQuery("admin:setimage:custom", user_id=BOSS)
     await h.handle_callback_query(SimpleNamespace(callback_query=q), ctx)
     check("setimage:custom selects custom", db2.get_image_model() == "custom")
     q = FakeQuery("admin:removeimage", user_id=BOSS)
     await h.handle_callback_query(SimpleNamespace(callback_query=q), ctx)
     check("removeimage clears provider", db2.get_image_provider() is None)
-    check("removeimage reverts choice to duckai", db2.get_image_model() == "duckai")
+    check("removeimage reverts choice to none", db2.get_image_model() == "none")
 
     # --- permission: manager without 'image' perm cannot addimage ---
     db2.add_manager(MGR, BOSS)

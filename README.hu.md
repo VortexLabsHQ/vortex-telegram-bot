@@ -16,7 +16,7 @@ A saját szervereden fut, a saját országodban és nyelven. Te vagy a főnök: 
 
 - 💬 **AI csevegés** csoportokban (ébresztő szó) és privát csevegésekben (ébresztő szó nem kell)
 - 🔑 **Token pool** — több LLM szolgáltató és kulcs használata, automatikus rotáció és feladatátvétel
-- 🖼️ **Képgenerálás és szerkesztés** — ingyenes (DuckAI) vagy fizetős szolgáltatók
+- 🖼️ **Képgenerálás** — a saját kép szolgáltatásoddal (alap URL + API kulcs + modell), hozzáadva az `/admin`-ban
 - 🔍 **Webes keresés** — saját SearXNG, Wikipédia tartalékkal
 - 💰 **Valós idejű árak** — devízák, arany, olaj és kripto a helyi valutádban
 - 🕌 **Imaidők**, 🃏 **jósolások**, 😄 **viccek**, 🎲 **kockadobás és pénzfeldobás**
@@ -145,7 +145,7 @@ Küldd el az `/admin` parancsot privát csevegésben (csak a boss — senki más
 - 👥 **Felhasználók** — felhasználói statisztikák, kitiltás / feloldás, engedélyezett lista
 - 📊 **Statisztikák** — használati adatok
 - 💬 **Legutóbbi csevegések** — mit írtak az emberek a botnak (csak boss, privát)
-- 🖼️ **Képmodell** — DuckAI (ingyenes, alapértelmezett), HiLinkUp, egyedi kép szolgáltatás, vagy kikapcsolva
+- 🖼️ **Képmodell** — a saját kép szolgáltatásod (alap URL + API kulcs + modell), vagy kikapcsolva
 - 🛡️ **Menedzserek** — megbízható embereknek részleges panelhozzáférés adása
 - 🟢/🔴 **Üzem** — a bot be- vagy kikapcsolása mindenkinek (a boss továbbra is irányít)
 - 🌍 **Nyelv és Ország** — a bot nyelvének vagy országának bármikor módosítása
@@ -156,7 +156,7 @@ A bot egyszerre tárolhat kulcsokat több LLM szolgáltatótól. Rotál az egés
 
 ### Képek
 
-A képgenerálás három módban működik: **DuckAI** (ingyenes, kulcs nélkül, alapértelmezett), **HiLinkUp** (fizetős, jobb minőség), vagy egy **egyedi** OpenAI-kompatibilis kép szolgáltatás. Elküldhetsz a botnak egy fotót is, és megmondhatod, hogyan szerkessze ("készíts belőle rajzfilm stílust"), és új képet generál. A képgenerálás kikapcsolható az `/admin`-ból.
+🖼️ A képgenerálás a saját OpenAI-kompatibilis kép szolgáltatásodat használja: add meg az alap URL-t, az API kulcsot és a modellt az `/admin`-ban (🖼️ Képmodell). Nincs beépített kép szolgáltató, és a fotószerkesztés nem támogatott. A képgenerálás kikapcsolható az `/admin`-ból.
 
 ### Országok és nyelvek
 

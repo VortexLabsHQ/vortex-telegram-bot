@@ -281,20 +281,6 @@ class Settings:
         default_factory=lambda: float(os.getenv("AGY_TIMEOUT_SECONDS", "20"))
     )
 
-    # Image Generation (HiLinkUp, OpenAI-compatible /images/generations).
-    # Separate from the chat provider pool: image generation is a
-    # different endpoint. When the key is empty, the 'ورتکس عکس' fast
-    # path replies that image generation is not configured.
-    hilinkup_api_key: str = field(
-        default_factory=lambda: os.getenv("HILINKUP_API_KEY", "").strip()
-    )
-    hilinkup_image_model: str = field(
-        default_factory=lambda: os.getenv("HILINKUP_IMAGE_MODEL", "qwen-image-3.0").strip()
-    )
-    hilinkup_base_url: str = field(
-        default_factory=lambda: os.getenv("HILINKUP_BASE_URL", "https://api.hilinkup.com/v1").strip().rstrip("/")
-    )
-
     # Search Configuration. Default is SearXNG (self-hosted, no key);
     # Tavily needs a key and is inert without one.
     search_provider: str = field(

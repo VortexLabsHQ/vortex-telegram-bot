@@ -16,7 +16,7 @@ Běží na vašem vlastním serveru, ve vaší zemi a jazyce. Vy jste šéf: skr
 
 - 💬 **AI chat** ve skupinách (slovo pro probouzení) a soukromých chatech (slovo pro probouzení nepotřebné)
 - 🔑 **Token pool** — používejte několik LLM poskytovatelů a klíčů, automaticky se střídají a přepínají při selhání
-- 🖼️ **Generování a úprava obrázků** — zdarma (DuckAI) nebo placení poskytovatelé
+- 🖼️ **Generování obrázků** — s vaší vlastní obrazovou službou (základní URL + API klíč + model), přidanou v `/admin`
 - 🔍 **Vyhledávání na webu** — self-hosted SearXNG, se záložním Wikipedia
 - 💰 **Aktuální ceny** — měny, zlato, ropa a krypto ve vaší místní měně
 - 🕌 **Časy modliteb**, 🃏 **předpovědi**, 😄 **vtipy**, 🎲 **hody kostkou a mince**
@@ -145,7 +145,7 @@ Pošlete `/admin` v privátním chatu (pouze boss — nikdo jiný ho nemůže ot
 - 👥 **Uživatelé** — počty uživatelů, ban / unban, allowlist
 - 📊 **Statistiky** — čísla využití
 - 💬 **Nedávné chaty** — co lidé napsali botovi (pouze boss, privátně)
-- 🖼️ **Obrazový model** — DuckAI (zdarma, výchozí), HiLinkUp, vlastní obrazová služba, nebo vypnuto
+- 🖼️ **Obrazový model** — vaše vlastní obrazová služba (základní URL + API klíč + model), nebo vypnuto
 - 🛡️ **Manažeři** — důvěryhodným lidem povolíte přístup k částem panelu
 - 🟢/🔴 **Zap/Vyp** — zapne nebo vypne bota pro všechny (boss zůstává v kontrole)
 - 🌍 **Jazyk & Země** — změna jazyka nebo země bota kdykoli
@@ -156,7 +156,7 @@ Bot může držet klíče od několika LLM poskytovatelů najednou. Rotuje mezi 
 
 ### Obrázky
 
-Generování obrázků má tři režimy: **DuckAI** (zdarma, bez klíče, výchozí), **HiLinkUp** (placený, lepší kvalita), nebo **vlastní** OpenAI-kompatibilní obrazovou službu. Můžete botovi poslat fotku a říct mu, jak ji upravit ("udělej z toho kreslený styl"), a on vygeneruje nový obrázek. Generování obrázků jde z `/admin` vypnout.
+Generování obrázků používá vaši vlastní OpenAI-kompatibilní obrazovou službu: přidejte její základní URL, API klíč a model v `/admin` (🖼️ Obrazový model). Neexistuje vestavěný poskytovatel obrázků, a úprava fotek není podporována. Generování obrázků lze vypnout z `/admin`.
 
 ### Země a jazyky
 

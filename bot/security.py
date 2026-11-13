@@ -198,33 +198,6 @@ _IMAGE_ADD_IN_RE = re.compile(
     rf"^(?:توی|تو|در)\s+{_IMAGE_NOUNS}\s+(.+?)\s+هم\s+(?:باشه|باشد|بیار|بیاور)$"
 )
 
-# Image editing: modify an attached / replied-to photo. Markers that the
-# user wants the photo CHANGED (not described): explicit edit words,
-# style words, and "this photo" + an action verb.
-# NOTE: the "اضافه کن" / "حذف کن" verbs carry a word-boundary lookahead
-# so the "we" form does NOT match: "اضافه کنیم" ("what should we add?",
-# asking for an opinion) is a question, not an edit command. Without
-# the lookahead, "اضافه کن" matched inside "اضافه کنیم" and the bot
-# edited the photo when the user only asked what to add.
-_IMAGE_EDIT_MARKERS = (
-    r"(?:ویرایش|ادیت|تبدیل|عوض|تغییر|دربیار|در\s*بیار|به\s*سبک|استایل"
-    rf"|کارتونی|انیمه|سیاه\s*سفید|نقاشی|آبرنگ|سه\s*بعدی|اضافه\s*کن(?:ی|ید)?(?![{_PERSIAN_WORD_CHARS}])|حذف\s*کن(?:ی|ید)?(?![{_PERSIAN_WORD_CHARS}]))"
-)
-_IMAGE_EDIT_MARK_RE = re.compile(rf"(?:{_IMAGE_EDIT_MARKERS})")
-# "اینو/این عکس/عکس رو ... کن/بکن/بذار/بیار" — this photo + action verb.
-_IMAGE_EDIT_THIS_RE = re.compile(
-    r"(?:اینو|این\s+عکس|این\s+تصویر|عکسو|عکس\s+رو|تصویر\s+رو)\b.{0,30}?(?:کن|بکن|بذار|بیار|بگذار|بیاور)"
-)
-# A question / "tell me about it" request is analysis, NOT an edit.
-# Includes asking for the bot's OPINION ("بنظرت ... اضافه کنیم؟" —
-# "what do you think we should add?"), which must be answered with
-# a text suggestion, not by editing the photo.
-_IMAGE_EDIT_QUESTION_RE = re.compile(
-    rf"(?:چیه|چیست|توضیح|تحلیل|بررسی|چی\s+تو|کجاست|چند|چطور|چرا|بگو\s+که|بنویس\s+که|بنظرت|به\s*نظرت|بنظر|به\s*نظر"
-    rf"|(?<![{_PERSIAN_WORD_CHARS}])کیه(?![{_PERSIAN_WORD_CHARS}])"
-    rf"|(?<![{_PERSIAN_WORD_CHARS}])کیو(?![{_PERSIAN_WORD_CHARS}]))"
-)
-
 # Meta commands (fast paths, never consume daily quota):
 # "ورتکس آمار" (boss-only stats), "ورتکس سهمیه" (own daily quota),
 # "ورتکس راهنما" (help), "ورتکس آیدی" (own numeric Telegram id).
@@ -496,43 +469,6 @@ def extract_image_add_prompt(text: str | None, allow_bare: bool = False) -> str 
             p = mm.group(1).strip(" .،!؟?\"'«»()[]").strip()
             if p:
                 return p
-    return None
-
-
-def extract_image_edit_prompt(text: str | None) -> str | None:
-    """Return the edit instruction for a request to modify an attached /
-    replied-to photo ('اینو کارتونی کن' -> the instruction), or None when
-    the message is not an edit request. Works with or without the wake
-    word 'ورتکس' (a reply to a photo has no wake word). A question /
-    analysis request ('این چیه؟', 'توضیح بده') and a fresh-image request
-    ('ورتکس عکس یک گربه بساز') are NOT edits — those go to the analysis
-    and image-generation paths instead. The photo itself is resolved by
-    the caller; this only judges the TEXT."""
-    if not text:
-        return None
-    norm = normalize_persian(text)
-    rest = norm.strip(" .،!؟?\"'«»()[]").strip()
-    # Strip a LEADING wake word only (same as the add function).
-    m = re.match(
-        rf"^(?:لطفا\s+)?{_wake_alternation()}(?![{_PERSIAN_WORD_CHARS}])\s*",
-        rest,
-    )
-    if m:
-        rest = rest[m.end():].strip(" .،!؟?\"'«»()[]").strip()
-    if not rest:
-        return None
-    # A question / "tell me about it" request is analysis, not an edit.
-    if _IMAGE_EDIT_QUESTION_RE.search(rest):
-        return None
-    # Edit markers first: "عکس رو کارتونی کن" has an edit marker
-    # ("کارتونی"), so it is an edit — the old order checked the
-    # fresh-image request first and "عکس ..." always won, making this
-    # branch dead.
-    if _IMAGE_EDIT_MARK_RE.search(rest) or _IMAGE_EDIT_THIS_RE.search(rest):
-        return rest
-    # A fresh-image request is a new image, not an edit of the photo.
-    if extract_image_prompt(text) is not None:
-        return None
     return None
 
 

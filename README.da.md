@@ -16,7 +16,7 @@ Den kører på din egen server, i dit eget land og sprog. Du er chef: et skjult 
 
 - 💬 **AI-chat** i grupper (vågeord) og private chats (intet vågeord nødvendigt)
 - 🔑 **Token-pool** — brug flere LLM-udbydere og nøgler, roter og failover automatisk
-- 🖼️ **Billedgenerering og redigering** — gratis (DuckAI) eller betalte udbydere
+- 🖼️ **Billedgenerering** — med din egen billedtjeneste (base URL + API-nøgle + model), tilføjet i `/admin`
 - 🔍 **Websøgning** — self-hosted SearXNG, med Wikipedia som fallback
 - 💰 **Live-priser** — valutaer, guld, olie og krypto i din lokale valuta
 - 🕌 **Bønnetider**, 🃏 **spådomme**, 😄 **jokes**, 🎲 **terninger og myntkast**
@@ -145,7 +145,7 @@ Send `/admin` i en privat chat (kun boss — ingen andre kan åbne det, og det v
 - 👥 **Users** — brugerantal, ban / unban, allowlist
 - 📊 **Stats** — brugsnumre
 - 💬 **Recent chats** — hvad folk sagde til botten (kun boss, privat)
-- 🖼️ **Image model** — DuckAI (gratis, standard), HiLinkUp, en brugerdefineret billedtjeneste, eller fra
+- 🖼️ **Billedmodel** — din egen billedtjeneste (base URL + API-nøgle + model), eller fra
 - 🛡️ **Managers** — giv tillidspersoner adgang til dele af panelet
 - 🟢/🔴 **Power** — slå botten til eller fra for alle (bossen forbliver i kontrol)
 - 🌍 **Language & Country** — ændr botten's sprog eller land når som helst
@@ -156,7 +156,7 @@ Botten kan holde nøgler fra flere LLM-udbydere på én gang. Den roterer mellem
 
 ### Billeder
 
-Billedgenerering har tre tilstande: **DuckAI** (gratis, ingen nøgle, standard), **HiLinkUp** (betalt, bedre kvalitet), eller en **brugerdefineret** OpenAI-kompatibel billedtjeneste af din egen. Du kan også sende botten et billede og fortælle den, hvordan den skal redigere det ("gør dette til tegneseriestil"), og den vil generere et nyt billede. Billedgenerering kan slås fra fra `/admin`.
+Billedgenerering bruger din egen OpenAI-kompatible billedtjeneste: tilføj dens base URL, API-nøgle og model i `/admin` (🖼️ Billedmodel). Der er ingen indbygget billedudbyder, og billedredigering understøttes ikke. Billedgenerering kan slås fra fra `/admin`.
 
 ### Lande og sprog
 

@@ -16,7 +16,7 @@ Er läuft auf Ihrem eigenen Server, in Ihrem eigenen Land und in Ihrer Sprache. 
 
 - 💬 **KI-Chat** in Gruppen (Weckwort) und privaten Chats (kein Weckwort nötig)
 - 🔑 **Token-Pool** — mehrere LLM-Anbieter und Schlüssel nutzen, automatisch rotieren und bei Ausfall umschalten
-- 🖼️ **Bilderstellung und -bearbeitung** — kostenlos (DuckAI) oder kostenpflichtige Anbieter
+- 🖼️ **Bilderstellung** — mit Ihrem eigenen Bilddienst (Basis‑URL + API‑Schlüssel + Modell), hinzugefügt in `/admin`
 - 🔍 **Websuche** — selbstgehostetes SearXNG, mit Wikipedia als Fallback
 - 💰 **Live-Preise** — Währungen, Gold, Öl und Krypto in Ihrer Landeswährung
 - 🕌 **Gebetszeiten**, 🃏 **Wahrsagerei**, 😄 **Witze**, 🎲 **Würfel und Münzwurf**
@@ -145,7 +145,7 @@ Senden Sie `/admin` in einem privaten Chat (nur Chef — niemand sonst kann es �
 - 👥 **Nutzer** — Nutzerzahlen, sperren / entsperren, Allowlist
 - 📊 **Statistiken** — Nutzungszahlen
 - 💬 **Letzte Chats** — was Leute dem Bot gesagt haben (nur Chef, privat)
-- 🖼️ **Bildmodell** — DuckAI (kostenlos, Standard), HiLinkUp, eigener Bilddienst, oder aus
+- 🖼️ **Bildmodell** — Ihr eigener Bilddienst (Basis‑URL + API‑Schlüssel + Modell), oder aus
 - 🛡️ **Manager** — vertrauenswürdigen Leuten Zugriff auf Teile des Panels geben
 - 🟢/🔴 **Ein/Aus** — Bot für alle an- oder ausschalten (Chef behält die Kontrolle)
 - 🌍 **Sprache & Land** — Bot-Sprache oder -Land jederzeit ändern
@@ -156,7 +156,7 @@ Der Bot kann Schlüssel von mehreren LLM-Anbietern gleichzeitig halten. Er rotie
 
 ### Bilder
 
-Bilderstellung hat drei Modi: **DuckAI** (kostenlos, kein Schlüssel, Standard), **HiLinkUp** (kostenpflichtig, bessere Qualität), oder ein **eigener** OpenAI-kompatibler Bilddienst. Sie können dem Bot auch ein Foto senden und sagen, wie er es bearbeiten soll ("mach das im Cartoon-Stil"), und er erstellt ein neues Bild. Bilderstellung ist über `/admin` abschaltbar.
+Die Bilderstellung verwendet Ihren eigenen OpenAI-kompatiblen Bilddienst: fügen Sie dessen Basis‑URL, API‑Schlüssel und Modell in `/admin` hinzu (🖼️ Bildmodell). Es gibt keinen integrierten Bildanbieter, und die Fotobearbeitung wird nicht unterstützt. Die Bilderstellung kann über `/admin` deaktiviert werden.
 
 ### Länder und Sprachen
 

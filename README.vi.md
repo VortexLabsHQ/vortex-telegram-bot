@@ -16,7 +16,7 @@ Nó chạy trên máy chủ của riêng bạn, ở quốc gia và ngôn ngữ c
 
 - 💬 **Trò chuyện AI** trong nhóm (từ khóa đánh thức) và trò chuyện riêng (không cần từ khóa đánh thức)
 - 🔑 **Nhóm token** — sử dụng nhiều nhà cung cấp và khóa LLM, xoay vòng và chuyển đổi tự động
-- 🖼️ **Tạo và chỉnh sửa hình ảnh** — miễn phí (DuckAI) hoặc các nhà cung cấp trả phí
+- 🖼️ **Tạo hình ảnh** — với dịch vụ hình ảnh của bạn (URL cơ sở + khóa API + mô hình), thêm trong `/admin`
 - 🔍 **Tìm kiếm web** — SearXNG tự lưu trữ, có dự phòng Wikipedia
 - 💰 **Giá trực tiếp** — tiền tệ, vàng, dầu và crypto bằng tiền tệ địa phương của bạn
 - 🕌 **Giờ cầu nguyện**, 🃏 **xem bói**, 😄 **truyện cười**, 🎲 **tung xúc xắc và lật đồng xu**
@@ -145,7 +145,7 @@ Gửi `/admin` trong chat riêng (chỉ boss — không ai khác mở được, 
 - 👥 **Users** — thống kê người dùng, ban / unban, danh sách cho phép
 - 📊 **Stats** — con số sử dụng
 - 💬 **Recent chats** — mọi người nói gì với bot (chỉ boss, riêng tư)
-- 🖼️ **Image model** — DuckAI (miễn phí, mặc định), HiLinkUp, dịch vụ ảnh tùy chỉnh, hoặc tắt
+- 🖼️ **Mô hình hình ảnh** — dịch vụ hình ảnh của bạn (URL cơ sở + khóa API + mô hình), hoặc tắt
 - 🛡️ **Managers** — cấp quyền truy cập một phần bảng điều khiển cho người tin cậy
 - 🟢/🔴 **Power** — bật hoặc tắt bot cho mọi người (boss vẫn giữ điều khiển)
 - 🌍 **Language & Country** — đổi ngôn ngữ hoặc quốc gia của bot bất cứ lúc nào
@@ -156,7 +156,7 @@ Bot có thể giữ khóa từ nhiều nhà cung cấp LLM cùng lúc. Nó xoay 
 
 ### Images
 
-Tạo ảnh có ba chế độ: **DuckAI** (miễn phí, không cần khóa, mặc định), **HiLinkUp** (trả phí, chất lượng tốt hơn), hoặc dịch vụ ảnh **tùy chỉnh** tương thích OpenAI của riêng bạn. Bạn cũng có thể gửi ảnh cho bot và nói cách chỉnh sửa ("biến này thành phong cách hoạt hình"), và nó sẽ tạo ảnh mới. Tạo ảnh có thể tắt từ `/admin`.
+Tạo hình ảnh sử dụng dịch vụ hình ảnh tương thích OpenAI của bạn: thêm URL cơ sở, khóa API và mô hình của nó trong `/admin` (🖼️ Image model). Không có nhà cung cấp hình ảnh tích hợp sẵn, và chỉnh sửa ảnh không được hỗ trợ. Tạo hình ảnh có thể tắt từ `/admin`.
 
 ### Countries and languages
 
